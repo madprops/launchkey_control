@@ -3,73 +3,33 @@
 # This is a script to control a linux system
 # using the Launchkey MK2 25 controller
 
+declare -A pads;
+pads["1"]="28";
+pads["2"]="29";
+pads["3"]="2A";
+pads["4"]="2B";
+pads["5"]="30";
+pads["6"]="31";
+pads["7"]="32";
+pads["8"]="33";
+pads["9"]="24";
+pads["10"]="25";
+pads["11"]="26";
+pads["12"]="27";
+pads["13"]="2C";
+pads["14"]="2D";
+pads["15"]="2E";
+pads["16"]="2F";
+
+declare -A colors;
+colors["red"]="6A";
+colors["green"]="4B";
+colors["yellow"]="C" ;
+colors["off"]="00";
+
 function change_led
 {
-    if [[ $1 == 1 ]]; then
-        n=28;
-    
-    elif [[ $1 == 2 ]]; then
-        n=29;
-
-    elif [[ $1 == 3 ]]; then
-        n=2A;
-
-    elif [[ $1 == 4 ]]; then
-        n=2B;
-
-    elif [[ $1 == 5 ]]; then
-        n=30;
-
-    elif [[ $1 == 6 ]]; then
-        n=31;
-
-    elif [[ $1 == 7 ]]; then
-        n=32;
-
-    elif [[ $1 == 8 ]]; then
-        n=33;
-
-    elif [[ $1 == 9 ]]; then
-        n=24;
-
-    elif [[ $1 == 10 ]]; then
-        n=25;
-
-    elif [[ $1 == 11 ]]; then
-        n=26;
-
-    elif [[ $1 == 12 ]]; then
-        n=27;
-
-    elif [[ $1 == 13 ]]; then
-        n=2C;
-
-    elif [[ $1 == 14 ]]; then
-        n=2D;
-
-    elif [[ $1 == 15 ]]; then
-        n=2E;
-
-    elif [[ $1 == 16 ]]; then
-        n=2F;
-
-    fi
-
-    if [[ $2 == red ]]; then
-        c=6A;
-    
-    elif [[ $2 == green ]]; then
-        c=4B;
-
-    elif [[ $2 == yellow ]]; then
-        c=C;
-    
-    elif [[ $2 == off ]]; then
-        c=00;
-        
-    fi
-
-    $(amidi -p hw:2,0,1 -S "9F $n $c");
+    $(amidi -p hw:2,0,1 -S "9F ${pads[$1]} ${colors[$2]}");
 }
 
 function turn_leds_off
