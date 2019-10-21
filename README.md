@@ -12,6 +12,6 @@ If not, you can modify the source, or change it via the Launchkey by pressing bo
 
 More things will be added in time as I think of new functions.
 
-In the image below you can see the Launchkey with the indicator leds. The top row indicates cpu usage, while the bottom row indicates ram use. The colors depende on the usage percentage.
+In the image below you can see the Launchkey with the indicator leds. The top row indicates cpu usage, while the bottom row indicates ram usage. The colors depende on the usage percentage.
 
 ![](https://i.imgur.com/NtrsZtr.jpg)
