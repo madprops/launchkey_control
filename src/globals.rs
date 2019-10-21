@@ -40,8 +40,9 @@ lazy_static!
     static ref COLORS: HashMap<&'static str, &'static str> = hashmap!
     {
         "red" => "6A",
-        "green" => "4B",
+        "orange" => "6B",
         "yellow" => "C",
+        "green" => "4B",
         "off" => "00"
     };
 

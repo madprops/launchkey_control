@@ -36,7 +36,7 @@ struct MidiEvent
 fn main()
 {
     turn_leds_off("both");
-    
+
     thread::spawn(move ||
     {
         loop
@@ -243,7 +243,7 @@ fn resource_check()
         if g_get_cpu_level() != 5
         {
             turn_leds_off("top");
-            change_led_range(1, 5, "yellow");
+            change_led_range(1, 5, "orange");
             g_set_cpu_level(5);
         }
     }
@@ -253,7 +253,7 @@ fn resource_check()
         if g_get_cpu_level() != 4
         {
             turn_leds_off("top");
-            change_led_range(1, 4, "yellow");
+            change_led_range(1, 4, "orange");
             g_set_cpu_level(4);
         }
     }
@@ -263,7 +263,7 @@ fn resource_check()
         if g_get_cpu_level() != 3
         {
             turn_leds_off("top");
-            change_led_range(1, 3, "yellow");
+            change_led_range(1, 3, "orange");
             g_set_cpu_level(3);
         }
     }
@@ -327,7 +327,7 @@ fn resource_check()
         if g_get_ram_level() != 5
         {
             turn_leds_off("bottom");
-            change_led_range(9, 13, "yellow");
+            change_led_range(9, 13, "orange");
             g_set_ram_level(5);
         }
     }
@@ -337,7 +337,7 @@ fn resource_check()
         if g_get_ram_level() != 4
         {
             turn_leds_off("bottom");
-            change_led_range(9, 12, "yellow");
+            change_led_range(9, 12, "orange");
             g_set_ram_level(4);
         }
     }
@@ -347,7 +347,7 @@ fn resource_check()
         if g_get_ram_level() != 3
         {
             turn_leds_off("bottom");
-            change_led_range(9, 11, "yellow");
+            change_led_range(9, 11, "orange");
             g_set_ram_level(3);
         }
     }
