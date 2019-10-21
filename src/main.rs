@@ -97,74 +97,102 @@ fn start_listener()
 // Detect and react to key or slider events
 fn process_event(e: MidiEvent)
 {
-    if e.event_1 == s!("Note")
+    match &e.event_1[..]
     {
-        if e.event_2 == s!("off")
+        "Note" =>
         {
-            return;
-        }
+            if e.event_2 == s!("off")
+            {
+                return;
+            }
 
-        match &e.channel[..]
-        {
-            // Piano keys
-            "0" =>
+            match &e.channel[..]
             {
-                match &e.data_1[..]
+                // Piano keys
+                "0" =>
                 {
-                    // First white key
-                    "50" =>
+                    match &e.data_1[..]
                     {
-                        Command::new("wmctrl")
-                            .arg("-s").arg("0").status()
-                            .expect("wmctrl failed to run.");
-                    },
-                    // Second white key
-                    "52" =>
-                    {
-                        Command::new("wmctrl")
-                            .arg("-s").arg("1").status()
-                            .expect("wmctrl failed to run.");
-                    },
-                    // Third white key
-                    "54" =>
-                    {
-                        Command::new("wmctrl")
-                            .arg("-s").arg("2").status()
-                            .expect("wmctrl failed to run.");
-                    },
-                    // Fourth white key
-                    "55" =>
-                    {
-                        Command::new("wmctrl")
-                            .arg("-s").arg("3").status()
-                            .expect("wmctrl failed to run.");
-                    },
-                    // First black key
-                    "51" =>
-                    {
-                        Command::new("xdotool")
-                            .arg("key").arg("Super_L+Ctrl+Left")
-                            .status().expect("xdotool failed to run.");
-                    },
-                    // Second black key
-                    "53" =>
-                    {
-                        Command::new("xdotool")
-                            .arg("key").arg("Super_L+Ctrl+Right")
-                            .status().expect("xdotool failed to run.");
-                    },                    
-                    _ => {}
-                }
-            },
-            // Drum pads
-            "9" =>
+                        // First white key
+                        "50" =>
+                        {
+                            Command::new("wmctrl")
+                                .arg("-s").arg("0").status()
+                                .expect("wmctrl failed to run.");
+                        },
+                        // Second white key
+                        "52" =>
+                        {
+                            Command::new("wmctrl")
+                                .arg("-s").arg("1").status()
+                                .expect("wmctrl failed to run.");
+                        },
+                        // Third white key
+                        "54" =>
+                        {
+                            Command::new("wmctrl")
+                                .arg("-s").arg("2").status()
+                                .expect("wmctrl failed to run.");
+                        },
+                        // Fourth white key
+                        "55" =>
+                        {
+                            Command::new("wmctrl")
+                                .arg("-s").arg("3").status()
+                                .expect("wmctrl failed to run.");
+                        },
+                        // First black key
+                        "51" =>
+                        {
+                            Command::new("xdotool")
+                                .arg("key").arg("Super_L+Ctrl+Left")
+                                .status().expect("xdotool failed to run.");
+                        },
+                        // Second black key
+                        "53" =>
+                        {
+                            Command::new("xdotool")
+                                .arg("key").arg("Super_L+Ctrl+Right")
+                                .status().expect("xdotool failed to run.");
+                        },                    
+                        _ => {}
+                    }
+                },
+                // Drum pads
+                "9" =>
+                {
+                    turn_leds_off("both");
+                    g_set_cpu_level(0);
+                    g_set_ram_level(0);
+                },
+                _ => {}
+            }
+        },
+        "Control" =>
+        {
+            match &e.data_1[..]
             {
-                turn_leds_off("both");
-                g_set_cpu_level(0);
-                g_set_ram_level(0);
-            },
-            _ => {}
-        }
+                // Curved slider
+                "1" =>
+                {
+                    // Change volume
+                    let v:f64 = e.data_2.parse::<f64>().unwrap() / 127.0;
+            
+                    let cmd = format!("for sink in `pacmd list-sinks | grep 'index:' | cut -b12-`\n\
+                    do\n\
+                        pactl set-sink-volume $sink {:.*}\n\
+                    done", 2, v);
+
+                    Command::new("sh").arg("-c").arg(cmd).status().expect("Can't change volume.");
+                },
+                // Linear slider
+                "7" =>
+                {
+                }
+                _ => {}
+            }
+        },
+        _ => {}
     }
 }
 
