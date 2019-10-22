@@ -59,7 +59,7 @@ fn main()
     cleanup();
 }
 
-// Function that runs on termination
+// On termination
 fn cleanup()
 {
     turn_leds_off("both");

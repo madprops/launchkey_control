@@ -39,6 +39,87 @@ pub struct TriggerEvent
     data_2: String,
 }
 
+// Execute a function associated with a key
+pub fn key_function(s: &str)
+{
+    // w=white b=black
+    // w1 means first white key
+    // b4 means fourth black key
+
+    match s
+    {
+        "w1" => run_command("wmctrl -s 0"),
+        "w2" => run_command("wmctrl -s 1"),
+        "w3" => run_command("wmctrl -s 2"),
+        "w4" => run_command("wmctrl -s 3"),
+        "w5" => {},
+        "w6" => {},
+        "w7" => {},
+        "w8" => {},
+        "w9" => {},
+        "w10" => {},
+        "w11" => {},
+        "w12" => {},
+        "w13" => {},
+        "w14" => {},
+        "w15" => run_command("xdotool key Super_L+l"),
+        "b1" => run_command("xdotool key Super_L+Ctrl+Left"),
+        "b2" => run_command("xdotool key Super_L+Ctrl+Right"),
+        "b3" => {},
+        "b4" => {},
+        "b5" => {},
+        "b6" => {},
+        "b7" => {},
+        "b8" => {},
+        "b9" => {},
+        "b10" => {},
+        _ => {}
+    }
+}
+
+// This is the note of the first key
+// This can be changed through Octave
+const FIRST_KEY: usize = 48;
+
+// Gets the key positon
+// i.e note 48 -> w1
+pub fn get_key_position(note: String) -> String
+{
+    let fst = FIRST_KEY;
+    let n = note.parse::<usize>().unwrap();
+
+    // White keys
+    if n == fst {s!("w1")}
+    else if n == fst + 2 {s!("w2")}
+    else if n == fst + 4 {s!("w3")}
+    else if n == fst + 5 {s!("w4")}
+    else if n == fst + 7 {s!("w5")}
+    else if n == fst + 9 {s!("w6")}
+    else if n == fst + 11 {s!("w7")}
+    else if n == fst + 12 {s!("w8")}
+    else if n == fst + 14 {s!("w9")}
+    else if n == fst + 16 {s!("w10")}
+    else if n == fst + 17 {s!("w11")}
+    else if n == fst + 19 {s!("w12")}
+    else if n == fst + 21 {s!("w13")}
+    else if n == fst + 23 {s!("w14")}
+    else if n == fst + 24 {s!("w15")}
+
+    // Black keys
+    else if n == fst + 1 {s!("b1")}
+    else if n == fst + 3 {s!("b2")}
+    else if n == fst + 6 {s!("b3")}
+    else if n == fst + 8 {s!("b4")}
+    else if n == fst + 10 {s!("b5")}
+    else if n == fst + 13 {s!("b6")}
+    else if n == fst + 15 {s!("b7")}
+    else if n == fst + 18 {s!("b8")}
+    else if n == fst + 20 {s!("b9")}
+    else if n == fst + 22 {s!("b10")}
+
+    else {s!("")}
+}
+
 // Start listening to key or slider events
 pub fn start_trigger_listener()
 {
@@ -98,30 +179,10 @@ pub fn process_trigger_event(e: TriggerEvent)
 
             match &e.channel[..]
             {
-                // Piano keys
-                "0" =>
-                {
-                    match &e.data_1[..]
-                    {
-                        // First white key
-                        "48" => run_command("wmctrl -s 0"),
-                        // Second white key
-                        "50" => run_command("wmctrl -s 1"),
-                        // Third white key
-                        "52" => run_command("wmctrl -s 2"),
-                        // Fourth white key
-                        "53" => run_command("wmctrl -s 3"),
-                        // Last white key
-                        "72" => run_command("xdotool key Super_L+l"),
-                        // First black key
-                        "49" => run_command("xdotool key Super_L+Ctrl+Left"),
-                        // Second black key
-                        "51" => run_command("xdotool key Super_L+Ctrl+Right"),
-                        _ => {}
-                    }
-                },
+                // Keys
+                "0" => key_function(&get_key_position(e.data_1)),
                 // Drum pads
-                "9" =>
+                "9" =>  
                 {
                     turn_leds_off("both");
                     g_set_cpu_level(0);
