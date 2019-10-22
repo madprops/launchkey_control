@@ -96,7 +96,7 @@ fn start_listener()
                                 .map(|x| s!(x.replace(",", "").trim()))
                                 .collect();
 
-            if chunks[0] == s!("Waiting") || chunks[0] == s!("Source")
+            if chunks[0] == "Waiting" || chunks[0] == "Source"
             {
                 continue;
             }
@@ -132,7 +132,7 @@ fn process_event(e: MidiEvent)
     {
         "Note" =>
         {
-            if e.event_2 == s!("off")
+            if e.event_2 == "off"
             {
                 return;
             }
