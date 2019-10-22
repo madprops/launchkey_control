@@ -114,42 +114,42 @@ fn process_event(e: MidiEvent)
                     match &e.data_1[..]
                     {
                         // First white key
-                        "50" =>
+                        "48" =>
                         {
                             Command::new("wmctrl")
                                 .arg("-s").arg("0").status()
                                 .expect("wmctrl failed to run.");
                         },
                         // Second white key
-                        "52" =>
+                        "50" =>
                         {
                             Command::new("wmctrl")
                                 .arg("-s").arg("1").status()
                                 .expect("wmctrl failed to run.");
                         },
                         // Third white key
-                        "54" =>
+                        "52" =>
                         {
                             Command::new("wmctrl")
                                 .arg("-s").arg("2").status()
                                 .expect("wmctrl failed to run.");
                         },
                         // Fourth white key
-                        "55" =>
+                        "53" =>
                         {
                             Command::new("wmctrl")
                                 .arg("-s").arg("3").status()
                                 .expect("wmctrl failed to run.");
                         },
                         // First black key
-                        "51" =>
+                        "49" =>
                         {
                             Command::new("xdotool")
                                 .arg("key").arg("Super_L+Ctrl+Left")
                                 .status().expect("xdotool failed to run.");
                         },
                         // Second black key
-                        "53" =>
+                        "51" =>
                         {
                             Command::new("xdotool")
                                 .arg("key").arg("Super_L+Ctrl+Right")
