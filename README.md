@@ -8,7 +8,7 @@ It also uses the drum pad leds to reflect cpu and ram usage.
 
 It should be easy enough to modify or extend for your own use.
 
-This script assumes the first (white) key is the note number 50.
+This script assumes the first (white) key is the note number 48.
 
 If not, you can modify the source, or change it via the Launchkey by pressing both octave buttons at the same time.
 
