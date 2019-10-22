@@ -189,15 +189,9 @@ fn process_event(e: MidiEvent)
                     run_command(&cmd);
                 },
                 // Linear slider
-                "7" =>
-                {
-                    //
-                },
+                "7" => {},
                 // Stop button
-                "114" =>
-                {
-                    run_command("systemctl suspend");
-                },
+                "114" => run_command("systemctl suspend"),
                 _ => {}
             }
         },
