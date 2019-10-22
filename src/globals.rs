@@ -17,7 +17,7 @@ use lazy_static::lazy_static;
 // Global variables/constants
 lazy_static!
 {
-    static ref PADS: HashMap<u8, &'static str> = hashmap!
+    static ref PADS: HashMap<usize, &'static str> = hashmap!
     {
         1 => "28",
         2 => "29",
@@ -53,7 +53,7 @@ lazy_static!
 // Getters and setters for globals
 
 // Returns a value from the pads hashmap
-pub fn g_get_pad(n: u8) -> &'static str
+pub fn g_get_pad(n: usize) -> &'static str
 {
     PADS.get(&n).unwrap()
 }

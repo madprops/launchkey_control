@@ -13,12 +13,19 @@ use std::
     {
         BufReader, BufRead,
     },
+    sync::
+    {
+        Arc,
+        atomic::
+        {
+            AtomicBool, Ordering,
+        },
+    },
     thread, time,
 };
 
 // Struct that holds data
 // about a key/slider event
-
 #[allow(dead_code)]
 struct MidiEvent
 {
@@ -35,18 +42,36 @@ struct MidiEvent
 // Program starts here
 fn main()
 {
-    turn_leds_off("both");
+    let running = Arc::new(AtomicBool::new(true));
+    let r = running.clone();
 
-    thread::spawn(move ||
+    ctrlc::set_handler(move || {
+        r.store(false, Ordering::SeqCst);
+    }).expect("Error setting Ctrl-C handler");
+
+    while running.load(Ordering::SeqCst) 
     {
-        loop
+        turn_leds_off("both");
+
+        thread::spawn(move ||
         {
-            resource_check();
-            thread::sleep(time::Duration::from_secs(5));
-        }
-    });
+            loop
+            {
+                resource_check();
+                thread::sleep(time::Duration::from_secs(5));
+            }
+        });
     
-    start_listener();
+        start_listener();
+    }
+
+    cleanup();
+}
+
+// Function that runs on termination
+fn cleanup()
+{
+    turn_leds_off("both");
 }
 
 // Start listening to key or slider events
@@ -58,7 +83,6 @@ fn start_listener()
                     .stdout(Stdio::piped())
                     .spawn()
                     .unwrap();
-
 
     {
         let stdout = cmd.stdout.as_mut().unwrap();
@@ -94,6 +118,13 @@ fn start_listener()
     }
 }
 
+// Runs a command
+fn run_command(cmd: &str)
+{
+    Command::new("sh").arg("-c").arg(cmd)
+        .status().expect("Can't run command.");
+}
+
 // Detect and react to key or slider events
 fn process_event(e: MidiEvent)
 {
@@ -114,47 +145,19 @@ fn process_event(e: MidiEvent)
                     match &e.data_1[..]
                     {
                         // First white key
-                        "48" =>
-                        {
-                            Command::new("wmctrl")
-                                .arg("-s").arg("0").status()
-                                .expect("wmctrl failed to run.");
-                        },
+                        "48" => run_command("wmctrl -s 0"),
                         // Second white key
-                        "50" =>
-                        {
-                            Command::new("wmctrl")
-                                .arg("-s").arg("1").status()
-                                .expect("wmctrl failed to run.");
-                        },
+                        "50" => run_command("wmctrl -s 1"),
                         // Third white key
-                        "52" =>
-                        {
-                            Command::new("wmctrl")
-                                .arg("-s").arg("2").status()
-                                .expect("wmctrl failed to run.");
-                        },
+                        "52" => run_command("wmctrl -s 2"),
                         // Fourth white key
-                        "53" =>
-                        {
-                            Command::new("wmctrl")
-                                .arg("-s").arg("3").status()
-                                .expect("wmctrl failed to run.");
-                        },
+                        "53" => run_command("wmctrl -s 3"),
+                        // Last white key
+                        "72" => run_command("xdotool key Super_L+l"),
                         // First black key
-                        "49" =>
-                        {
-                            Command::new("xdotool")
-                                .arg("key").arg("Super_L+Ctrl+Left")
-                                .status().expect("xdotool failed to run.");
-                        },
+                        "49" => run_command("xdotool key Super_L+Ctrl+Left"),
                         // Second black key
-                        "51" =>
-                        {
-                            Command::new("xdotool")
-                                .arg("key").arg("Super_L+Ctrl+Right")
-                                .status().expect("xdotool failed to run.");
-                        },                    
+                        "51" => run_command("xdotool key Super_L+Ctrl+Right"),
                         _ => {}
                     }
                 },
@@ -183,12 +186,18 @@ fn process_event(e: MidiEvent)
                         pactl set-sink-volume $sink {:.*}\n\
                     done", 2, v);
 
-                    Command::new("sh").arg("-c").arg(cmd).status().expect("Can't change volume.");
+                    run_command(&cmd);
                 },
                 // Linear slider
                 "7" =>
                 {
-                }
+                    //
+                },
+                // Stop button
+                "114" =>
+                {
+                    run_command("systemctl suspend");
+                },
                 _ => {}
             }
         },
@@ -197,12 +206,10 @@ fn process_event(e: MidiEvent)
 }
 
 // Light up or turn off a led
-fn change_led(n: u8, color: &str)
+fn change_led(n: usize, color: &str)
 {
-    Command::new("amidi")
-        .arg("-p").arg("hw:2,0,1").arg("-S").arg("9F")
-        .arg(g_get_pad(n)).arg(g_get_color(color))
-        .status().expect("amidi failed to run.");
+    run_command(&format!("amidi -p hw:2,0,1 -S 9F {} {}", 
+        g_get_pad(n), g_get_color(color)));
 }
 
 // Turn some or all leds off
@@ -220,12 +227,33 @@ fn turn_leds_off(mode: &str)
 }
 
 // Change leds from a linear range
-fn change_led_range(n1: u8, n2: u8, color: &str)
+fn change_led_range(n1: usize, n2: usize, color: &str)
 {
     for x in n1..=n2
     {
         change_led(x, color);
     }
+}
+
+// Get the proper led level
+fn led_level(p: f32) -> usize
+{
+    if p >= 90.0 {8}
+    else if p >= 80.0 {7}
+    else if p >= 70.0 {6}
+    else if p >= 60.0 {5}
+    else if p >= 50.0 {4}
+    else if p >= 40.0 {3}
+    else if p >= 30.0 {2}
+    else {1}
+}
+
+// Get the proper led color
+fn led_color<'a>(n: usize) -> &'a str
+{
+    if n >= 6 {"red"}
+    else if n >= 3 {"orange"}
+    else {"green"}
 }
 
 // Get CPU and RAM info 
@@ -234,169 +262,25 @@ fn resource_check()
 {
     // Calculate and reflect CPU usage
 
-    let cpu = psutil::cpu::cpu_percent(1.0).expect("Can't measure cpu usage.");
-    
-    if cpu > 90.0
-    {
-        if g_get_cpu_level() != 8
-        {
-            turn_leds_off("top");
-            change_led_range(1, 8, "red");
-            g_set_cpu_level(8);
-        }
-    }
+    let cpu = psutil::cpu::cpu_percent(1.0).expect("Can't measure cpu usage.") as f32;
+    let level = led_level(cpu);
 
-    else if cpu > 80.0
+    if g_get_cpu_level() != level
     {
-        if g_get_cpu_level() != 7
-        {
-            turn_leds_off("top");
-            change_led_range(1, 7, "red");
-            g_set_cpu_level(7);
-        }
-    }
-
-    else if cpu > 70.0
-    {
-        if g_get_cpu_level() != 6
-        {
-            turn_leds_off("top");
-            change_led_range(1, 6, "red");
-            g_set_cpu_level(6);
-        }
-    }
-
-    else if cpu > 60.0
-    {
-        if g_get_cpu_level() != 5
-        {
-            turn_leds_off("top");
-            change_led_range(1, 5, "orange");
-            g_set_cpu_level(5);
-        }
-    }
-
-    else if cpu > 50.0
-    {
-        if g_get_cpu_level() != 4
-        {
-            turn_leds_off("top");
-            change_led_range(1, 4, "orange");
-            g_set_cpu_level(4);
-        }
-    }
-
-    else if cpu > 40.0
-    {
-        if g_get_cpu_level() != 3
-        {
-            turn_leds_off("top");
-            change_led_range(1, 3, "orange");
-            g_set_cpu_level(3);
-        }
-    }
-
-    else if cpu > 30.0
-    {
-        if g_get_cpu_level() != 2
-        {
-            turn_leds_off("top");
-            change_led_range(1, 2, "green");
-            g_set_cpu_level(2);
-        }
-    }
-
-    else
-    {
-        if g_get_cpu_level() != 1
-        {
-            turn_leds_off("top");
-            change_led(1, "green");
-            g_set_cpu_level(1);
-        }
+        turn_leds_off("top");
+        change_led_range(1, level, led_color(level));
+        g_set_cpu_level(level);
     }
 
     // Calculate and reflect RAM usage
 
     let ram = psutil::memory::virtual_memory().expect("Can't measure ram usage.").percent;
+    let level = led_level(ram);
 
-    if ram > 90.0
+    if g_get_ram_level() != level
     {
-        if g_get_ram_level() != 8
-        {
-            turn_leds_off("bottom");
-            change_led_range(9, 16, "red");
-            g_set_ram_level(8);
-        }
-    }
-
-    else if ram > 80.0
-    {
-        if g_get_ram_level() != 7
-        {
-            turn_leds_off("bottom");
-            change_led_range(9, 15, "red");
-            g_set_ram_level(7);
-        }
-    }
-
-    else if ram > 70.0
-    {
-        if g_get_ram_level() != 6
-        {
-            turn_leds_off("bottom");
-            change_led_range(9, 14, "red");
-            g_set_ram_level(6);
-        }
-    }
-
-    else if ram > 60.0
-    {
-        if g_get_ram_level() != 5
-        {
-            turn_leds_off("bottom");
-            change_led_range(9, 13, "orange");
-            g_set_ram_level(5);
-        }
-    }
-
-    else if ram > 50.0
-    {
-        if g_get_ram_level() != 4
-        {
-            turn_leds_off("bottom");
-            change_led_range(9, 12, "orange");
-            g_set_ram_level(4);
-        }
-    }
-
-    else if ram > 40.0
-    {
-        if g_get_ram_level() != 3
-        {
-            turn_leds_off("bottom");
-            change_led_range(9, 11, "orange");
-            g_set_ram_level(3);
-        }
-    }
-
-    else if ram > 30.0
-    {
-        if g_get_ram_level() != 2
-        {
-            turn_leds_off("bottom");
-            change_led_range(9, 10, "green");
-            g_set_ram_level(2);
-        }
-    }
-
-    else
-    {
-        if g_get_ram_level() != 1
-        {
-            turn_leds_off("bottom");
-            change_led(9, "green");
-            g_set_ram_level(1);
-        }
+        turn_leds_off("bottom");
+        change_led_range(9, 8 + level, led_color(level));
+        g_set_ram_level(level);
     }
 }
