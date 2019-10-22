@@ -48,6 +48,7 @@ pub fn key_function(s: &str)
 
     match s
     {
+        // White keys
         "w1" => run_command("wmctrl -s 0"),
         "w2" => run_command("wmctrl -s 1"),
         "w3" => run_command("wmctrl -s 2"),
@@ -63,6 +64,8 @@ pub fn key_function(s: &str)
         "w13" => {},
         "w14" => {},
         "w15" => run_command("xdotool key Super_L+l"),
+
+        // Black keys
         "b1" => run_command("xdotool key Super_L+Ctrl+Left"),
         "b2" => run_command("xdotool key Super_L+Ctrl+Right"),
         "b3" => {},
