@@ -1,6 +1,7 @@
 use crate::
 {
     s, run_command,
+    config::*,
     globals::*,
     leds::*,
 };
@@ -73,10 +74,6 @@ pub fn key_function(s: &str)
         _ => {}
     }
 }
-
-// This is the note of the first key
-// This can be changed through Octave
-const FIRST_KEY: usize = 48;
 
 // Gets the key positon
 // i.e note 48 -> w1
@@ -237,7 +234,7 @@ pub fn start_scroll_check()
             else if direction == 2 {run_command("xdotool click 5")}
 
             // Define the check speed here
-            thread::sleep(time::Duration::from_millis(200));
+            thread::sleep(time::Duration::from_millis(SCROLL_DELAY));
         }
     });
 }

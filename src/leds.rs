@@ -1,6 +1,7 @@
 use crate::
 {
     run_command,
+    config::*,
     globals::*,
 };
 
@@ -97,7 +98,7 @@ pub fn start_led_check()
         loop
         {
             update_leds();
-            thread::sleep(time::Duration::from_secs(5));
+            thread::sleep(time::Duration::from_secs(LED_DELAY));
         }
     });
 }

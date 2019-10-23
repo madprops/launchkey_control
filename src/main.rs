@@ -1,4 +1,5 @@
 mod macros;
+mod config;
 mod globals;
 mod triggers;
 mod leds;
