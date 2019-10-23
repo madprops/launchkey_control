@@ -1,6 +1,6 @@
 use crate::
 {
-    s, run_command,
+    s, p, run_command,
     config::*,
     globals::*,
     leds::*,
@@ -221,6 +221,7 @@ pub fn process_trigger_event(e: TriggerEvent)
                     {
                         "on" =>
                         {
+                            p!(pos);
                             g_set_key_state(&pos, true);
                             key_function(&pos, "on");
                         },
@@ -280,7 +281,11 @@ pub fn process_trigger_event(e: TriggerEvent)
                 // Linear slider
                 "7" => {},
                 // Stop button
-                "114" => run_command("systemctl suspend"),
+                "114" => 
+                if e.data_2 == "127"
+                {
+                    run_command("systemctl suspend");
+                },
                 // Track left
                 "103" => 
                 if e.data_2 == "127"

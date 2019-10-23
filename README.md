@@ -17,3 +17,6 @@ More things will be added in time as I think of new functions.
 In the image below you can see the Launchkey with the indicator leds. The top row indicates cpu usage, while the bottom row indicates ram usage. The colors depend on the usage percentage.
 
 ![](https://i.imgur.com/NtrsZtr.jpg)
+
+Tip: Cover the octave buttons. Put something on top to avoid accidental note offsets.
+Tip: Don't change the track offset. This happens when you press both of them at the same time.
