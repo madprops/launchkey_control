@@ -1,6 +1,6 @@
 use crate::
 {
-    s, p, run_command,
+    s, run_command,
     config::*,
     globals::*,
     leds::*,
@@ -221,7 +221,6 @@ pub fn process_trigger_event(e: TriggerEvent)
                     {
                         "on" =>
                         {
-                            p!(pos);
                             g_set_key_state(&pos, true);
                             key_function(&pos, "on");
                         },
