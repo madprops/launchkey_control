@@ -1,15 +1,12 @@
 use crate::
 {
     run_command,
-    globals::
-    {
-        g_get_cpu_level,
-        g_set_cpu_level,
-        g_get_ram_level,
-        g_set_ram_level,
-        g_get_pad,
-        g_get_color,
-    },
+    globals::*,
+};
+
+use std::
+{
+    thread, time,
 };
 
 // Light up or turn off a led
@@ -90,4 +87,17 @@ pub fn update_leds()
         change_led_range(9, 8 + level, led_color(level));
         g_set_ram_level(level);
     }
+}
+
+// Starts a thread to check leds
+pub fn start_led_check()
+{
+    thread::spawn(move ||
+    {
+        loop
+        {
+            update_leds();
+            thread::sleep(time::Duration::from_secs(5));
+        }
+    });
 }

@@ -1,19 +1,13 @@
 use crate::
 {
     s, run_command,
-    globals::
-    {
-        g_set_cpu_level,
-        g_set_ram_level,
-    },
-    leds::
-    {
-        turn_leds_off,
-    },
+    globals::*,
+    leds::*,
 };
 
 use std::
 {
+    thread, time,
     process::
     {
         Command, Stdio,
@@ -152,14 +146,14 @@ pub fn start_trigger_listener()
 
             let event = TriggerEvent
             {
-                source: s!(chunks[0]),
-                event_1: s!(chunks[1]),
-                event_2: s!(chunks[2]),
-                channel: s!(chunks[3]),
-                label_1: s!(chunks[4]),
-                data_1: s!(chunks[5]),
-                label_2: s!(chunks[6]),
-                data_2: s!(chunks[7]),
+                source: s!(chunks.get(0).unwrap_or(&s!(""))),
+                event_1: s!(chunks.get(1).unwrap_or(&s!(""))),
+                event_2: s!(chunks.get(2).unwrap_or(&s!(""))),
+                channel: s!(chunks.get(3).unwrap_or(&s!(""))),
+                label_1: s!(chunks.get(4).unwrap_or(&s!(""))),
+                data_1: s!(chunks.get(5).unwrap_or(&s!(""))),
+                label_2: s!(chunks.get(6).unwrap_or(&s!(""))),
+                data_2: s!(chunks.get(7).unwrap_or(&s!(""))),
             };
 
             process_trigger_event(event);
@@ -194,11 +188,19 @@ pub fn process_trigger_event(e: TriggerEvent)
                 _ => {}
             }
         },
+        // Pitch bend
+        "Pitch" =>
+        {
+            let n = e.data_1.parse::<isize>().unwrap();
+            let direction = if n > 0 {1} else if n < 0 {2} else {0};
+            g_set_scroll_direction(direction);
+        },
+        // Other controls
         "Control" =>
         {
             match &e.data_1[..]
             {
-                // Curved slider
+                // Curved right slider
                 "1" =>
                 {
                     // Change volume
@@ -220,4 +222,20 @@ pub fn process_trigger_event(e: TriggerEvent)
         },
         _ => {}
     }
+}
+
+pub fn start_scroll_check()
+{
+    thread::spawn(move || 
+    {   
+        loop
+        {
+            let direction = g_get_scroll_direction();
+            if direction == 1 {run_command("xdotool click 4")}
+            else if direction == 2 {run_command("xdotool click 5")}
+
+            // Define the check speed here
+            thread::sleep(time::Duration::from_millis(200));
+        }
+    });
 }

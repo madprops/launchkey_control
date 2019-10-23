@@ -48,6 +48,7 @@ lazy_static!
 
     static ref CPU_LEVEL: AtomicUsize = AtomicUsize::new(0);
     static ref RAM_LEVEL: AtomicUsize = AtomicUsize::new(0);
+    static ref SCROLL_DIRECTION: AtomicUsize = AtomicUsize::new(0);
 }
 
 // Getters and setters for globals
@@ -86,4 +87,16 @@ pub fn g_get_ram_level() -> usize
 pub fn g_set_ram_level(n: usize)
 {
     RAM_LEVEL.store(n, Ordering::SeqCst)
+}
+
+// Returns the scroll direction value
+pub fn g_get_scroll_direction() -> usize
+{
+    SCROLL_DIRECTION.load(Ordering::SeqCst)
+}
+
+// Sets the scroll direction global value
+pub fn g_set_scroll_direction(n: usize)
+{
+    SCROLL_DIRECTION.store(n, Ordering::SeqCst)
 }

@@ -5,15 +5,8 @@ mod leds;
 
 use crate::
 {
-    triggers::
-    {
-        start_trigger_listener,
-    },
-    leds::
-    {
-        turn_leds_off,
-        update_leds,
-    },
+    triggers::*,
+    leds::*,
 };
 
 use std::
@@ -27,7 +20,6 @@ use std::
         },
     },
     process::Command,
-    thread, time,
 };
 
 // Program starts here
@@ -43,16 +35,8 @@ fn main()
     while running.load(Ordering::SeqCst) 
     {
         turn_leds_off("both");
-
-        thread::spawn(move ||
-        {
-            loop
-            {
-                update_leds();
-                thread::sleep(time::Duration::from_secs(5));
-            }
-        });
-    
+        start_led_check();
+        start_scroll_check();
         start_trigger_listener();
     }
 
