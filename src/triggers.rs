@@ -72,11 +72,11 @@ pub fn key_function(s: &str, mode: &str)
                 "b3" => run_command("xdotool keydown Super_R"),
                 "b4" => run_command("xdotool keydown Shift"),
                 "b5" => run_command("xdotool keydown Return"),
-                "b6" => {},
-                "b7" => {},
-                "b8" => {},
-                "b9" => {},
-                "b10" => {},
+                "b6" => run_command("xdotool key Super_L+Ctrl+Shift+Left"),
+                "b7" => run_command("xdotool key Super_L+Ctrl+Shift+Right"),
+                "b8" => run_command("xdotool keydown Ctrl"),
+                "b9" => run_command("xdotool keydown minus"),
+                "b10" => run_command("xdotool keydown plus"),
                 _ => {}
             }
         },
@@ -110,9 +110,9 @@ pub fn key_function(s: &str, mode: &str)
                 "b5" => run_command("xdotool keyup Return"),
                 "b6" => {},
                 "b7" => {},
-                "b8" => {},
-                "b9" => {},
-                "b10" => {},
+                "b8" => run_command("xdotool keyup Ctrl"),
+                "b9" => run_command("xdotool keyup minus"),
+                "b10" => run_command("xdotool keyup plus"),
                 _ => {}
             }
         },
