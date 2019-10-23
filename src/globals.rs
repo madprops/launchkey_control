@@ -83,6 +83,27 @@ lazy_static!
         s!("b10") => false
     });
 
+    // Store if a key is pressed or not
+    static ref LED_COLOR: Mutex<HashMap<usize, String>> = Mutex::new(hashmap!
+    {
+        1 => s!("off"),
+        2 => s!("off"),
+        3 => s!("off"),
+        4 => s!("off"),
+        5 => s!("off"),
+        6 => s!("off"),
+        7 => s!("off"),
+        8 => s!("off"),
+        9 => s!("off"),
+        10 => s!("off"),
+        11 => s!("off"),
+        12 => s!("off"),
+        13 => s!("off"),
+        14 => s!("off"),
+        15 => s!("off"),
+        16 => s!("off")
+    });
+
     static ref CPU_LEVEL: AtomicUsize = AtomicUsize::new(0);
     static ref RAM_LEVEL: AtomicUsize = AtomicUsize::new(0);
     static ref SCROLL_DIRECTION: AtomicUsize = AtomicUsize::new(0);
@@ -113,6 +134,18 @@ pub fn g_get_key_state(s: &str) -> bool
 pub fn g_set_key_state(s: &str, b: bool)
 {
     KEY_STATE.lock().unwrap().insert(s!(s), b);
+}
+
+// Returns a value from the led color hashmap
+pub fn g_get_led_color(n: usize) -> String
+{
+    s!(LED_COLOR.lock().unwrap().get(&n).unwrap())
+}
+
+// Set a value in the led color hashmap
+pub fn g_set_led_color(n: usize, s: &str)
+{
+    LED_COLOR.lock().unwrap().insert(n, s!(s));
 }
 
 // Returns the cpu level global value

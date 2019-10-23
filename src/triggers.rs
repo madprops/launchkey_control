@@ -235,9 +235,19 @@ pub fn process_trigger_event(e: TriggerEvent)
                 // Drum pads
                 "9" =>  
                 {
-                    turn_leds_off("both");
-                    g_set_cpu_level(0);
-                    g_set_ram_level(0);
+                    let n = e.data_1.parse::<usize>().unwrap();
+                    let pos = get_pad_position(n);
+
+                    match &e.event_2[..]
+                    {
+                        "on" => pad_function(pos),
+                        "off" => 
+                        {
+                            let color = g_get_led_color(pos);
+                            change_led(pos, &color);
+                        },
+                        _ => {}
+                    }
                 },
                 _ => {}
             }
@@ -271,6 +281,18 @@ pub fn process_trigger_event(e: TriggerEvent)
                 "7" => {},
                 // Stop button
                 "114" => run_command("systemctl suspend"),
+                // Track left
+                "103" => 
+                if e.data_2 == "127"
+                {
+                    run_command("xdotool key XF86AudioPrev");
+                },
+                // Track right
+                "102" =>
+                if e.data_2 == "127"
+                {
+                    run_command("xdotool key XF86AudioNext");
+                }
                 _ => {}
             }
         },
@@ -294,4 +316,60 @@ pub fn start_scroll_check()
             thread::sleep(time::Duration::from_millis(SCROLL_DELAY));
         }
     });
+}
+
+// Get the position of a drum pad
+// Order goes from top left -> top right
+// then bottom left -> bottom right
+fn get_pad_position(n: usize) -> usize
+{
+    let fst = FIRST_PAD;
+
+    if n == fst {9}
+    else if n == fst + 1 {10}
+    else if n == fst + 2 {11}
+    else if n == fst + 3 {12}
+    else if n == fst + 4 {1}
+    else if n == fst + 5 {2}
+    else if n == fst + 6 {3}
+    else if n == fst + 7 {4}
+    else if n == fst + 8 {13}
+    else if n == fst + 9 {14}
+    else if n == fst + 10 {15}
+    else if n == fst + 11 {16}
+    else if n == fst + 12 {5}
+    else if n == fst + 13 {6}
+    else if n == fst + 14 {7}
+    else if n == fst + 15 {8}
+    else {0}
+}
+
+// Execute a function on pad event
+fn pad_function(n: usize)
+{
+    // 1 2 3 .. 8
+    // 9 10 11 .. 16
+    match n
+    {
+        // First row
+        1 => {},
+        2 => {},
+        3 => {},
+        4 => {},
+        5 => {},
+        6 => {},
+        7 => {},
+        8 => {},
+
+        // Second row
+        9 => run_command("xdotool key XF86AudioPlay"),
+        10 => {},
+        11 => {},
+        12 => {},
+        13 => {},
+        14 => {},
+        15 => {},
+        16 => {},
+        _ => {}
+    }
 }

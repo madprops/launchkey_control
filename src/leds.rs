@@ -15,6 +15,8 @@ pub fn change_led(n: usize, color: &str)
 {
     run_command(&format!("amidi -p hw:2,0,1 -S 9F {} {}", 
         g_get_pad(n), g_get_color(color)));
+    
+    g_set_led_color(n, color);
 }
 
 // Turn some or all leds off

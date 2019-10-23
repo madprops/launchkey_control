@@ -5,6 +5,9 @@
 // This can be changed through Octave
 pub const FIRST_KEY: usize = 48;
 
+// This is the number of the first drum pad
+pub const FIRST_PAD: usize = 36;
+
 // How often an iteration in the 
 // scroll check thread happens
 // This also controls the scroll speed

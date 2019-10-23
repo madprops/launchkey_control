@@ -4,7 +4,7 @@ My own mappings to control my computer with the Launchkey MK2 25.
 
 As of now, it has mappings to change virtual desktops, change the system's audio volume, lock screen, put computer to sleep, alt tab, scroll, zoom in/out, and move windows between monitors.
 
-It also uses the drum pad leds to reflect cpu and ram usage.
+It also uses the drum pad leds to reflect cpu and ram usage. Functions can also be set for pad taps.
 
 It should be easy enough to modify or extend for your own use.
 
