@@ -1,3 +1,5 @@
+#![allow(clippy::cognitive_complexity)]
+
 mod macros;
 mod config;
 mod globals;

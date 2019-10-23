@@ -35,42 +35,87 @@ pub struct TriggerEvent
 }
 
 // Execute a function associated with a key
-pub fn key_function(s: &str)
+// Either when a key is pressed or released
+pub fn key_function(s: &str, mode: &str)
 {
     // w=white b=black
     // w1 means first white key
     // b4 means fourth black key
 
-    match s
+    match mode
     {
-        // White keys
-        "w1" => run_command("wmctrl -s 0"),
-        "w2" => run_command("wmctrl -s 1"),
-        "w3" => run_command("wmctrl -s 2"),
-        "w4" => run_command("wmctrl -s 3"),
-        "w5" => {},
-        "w6" => {},
-        "w7" => {},
-        "w8" => {},
-        "w9" => {},
-        "w10" => {},
-        "w11" => {},
-        "w12" => {},
-        "w13" => {},
-        "w14" => {},
-        "w15" => run_command("xdotool key Super_L+l"),
+        // When key is pressed
+        "on" =>
+        {
+            match s
+            {
+                // White keys
+                "w1" => run_command("wmctrl -s 0"),
+                "w2" => run_command("wmctrl -s 1"),
+                "w3" => run_command("wmctrl -s 2"),
+                "w4" => run_command("wmctrl -s 3"),
+                "w5" => {},
+                "w6" => {},
+                "w7" => {},
+                "w8" => {},
+                "w9" => {},
+                "w10" => {},
+                "w11" => {},
+                "w12" => {},
+                "w13" => {},
+                "w14" => {},
+                "w15" => run_command("xdotool key Super_L+l"),
 
-        // Black keys
-        "b1" => run_command("xdotool key Super_L+Ctrl+Left"),
-        "b2" => run_command("xdotool key Super_L+Ctrl+Right"),
-        "b3" => {},
-        "b4" => {},
-        "b5" => {},
-        "b6" => {},
-        "b7" => {},
-        "b8" => {},
-        "b9" => {},
-        "b10" => {},
+                // Black keys
+                "b1" => run_command("xdotool key Super_L+Ctrl+Left"),
+                "b2" => run_command("xdotool key Super_L+Ctrl+Right"),
+                "b3" => run_command("xdotool keydown Super_R"),
+                "b4" => run_command("xdotool keydown Shift"),
+                "b5" => run_command("xdotool keydown Return"),
+                "b6" => {},
+                "b7" => {},
+                "b8" => {},
+                "b9" => {},
+                "b10" => {},
+                _ => {}
+            }
+        },
+        // When key is released
+        "off" =>
+        {
+            match s
+            {
+                // White keys
+                "w1" => {},
+                "w2" => {},
+                "w3" => {},
+                "w4" => {},
+                "w5" => {},
+                "w6" => {},
+                "w7" => {},
+                "w8" => {},
+                "w9" => {},
+                "w10" => {},
+                "w11" => {},
+                "w12" => {},
+                "w13" => {},
+                "w14" => {},
+                "w15" => {},
+
+                // Black keys
+                "b1" => {},
+                "b2" => {},
+                "b3" => run_command("xdotool keyup Super_R"),
+                "b4" => run_command("xdotool keyup Shift"),
+                "b5" => run_command("xdotool keyup Return"),
+                "b6" => {},
+                "b7" => {},
+                "b8" => {},
+                "b9" => {},
+                "b10" => {},
+                _ => {}
+            }
+        },
         _ => {}
     }
 }
@@ -165,16 +210,28 @@ pub fn process_trigger_event(e: TriggerEvent)
     {
         "Note" =>
         {
-            // Ignore if key is being released
-            if e.event_2 == "off"
-            {
-                return;
-            }
-
             match &e.channel[..]
             {
                 // Keys
-                "0" => key_function(&get_key_position(e.data_1)),
+                "0" => 
+                {
+                    let pos = get_key_position(e.data_1);
+
+                    match &e.event_2[..]
+                    {
+                        "on" =>
+                        {
+                            g_set_key_state(&pos, true);
+                            key_function(&pos, "on");
+                        },
+                        "off" =>
+                        {
+                            g_set_key_state(&pos, false);
+                            key_function(&pos, "off");
+                        },
+                        _ => {}
+                    }
+                }
                 // Drum pads
                 "9" =>  
                 {

@@ -1,14 +1,18 @@
 use crate::
 {
-    hashmap,
+    s, hashmap,
 };
 
 use std::
 {
     collections::HashMap,
-    sync::atomic::
+    sync::
     {
-        AtomicUsize, Ordering,
+        Mutex,
+        atomic::
+        {
+            AtomicUsize, Ordering
+        },
     },
 };
 
@@ -46,6 +50,39 @@ lazy_static!
         "off" => "00"
     };
 
+    // Store if a key is pressed or not
+    static ref KEY_STATE: Mutex<HashMap<String, bool>> = Mutex::new(hashmap!
+    {
+        // White keys
+        s!("w1") => false,
+        s!("w2") => false,
+        s!("w3") => false,
+        s!("w4") => false,
+        s!("w5") => false,
+        s!("w6") => false,
+        s!("w7") => false,
+        s!("w8") => false,
+        s!("w9") => false,
+        s!("w10") => false,
+        s!("w11") => false,
+        s!("w12") => false,
+        s!("w13") => false,
+        s!("w14") => false,
+        s!("w15") => false,
+
+        // Black keys
+        s!("b1") => false,
+        s!("b2") => false,
+        s!("b3") => false,
+        s!("b4") => false,
+        s!("b5") => false,
+        s!("b6") => false,
+        s!("b7") => false,
+        s!("b8") => false,
+        s!("b9") => false,
+        s!("b10") => false
+    });
+
     static ref CPU_LEVEL: AtomicUsize = AtomicUsize::new(0);
     static ref RAM_LEVEL: AtomicUsize = AtomicUsize::new(0);
     static ref SCROLL_DIRECTION: AtomicUsize = AtomicUsize::new(0);
@@ -63,6 +100,19 @@ pub fn g_get_pad(n: usize) -> &'static str
 pub fn g_get_color(c: &str) -> &'static str
 {
     COLORS.get(c).unwrap()
+}
+
+// Returns a value from the key state hashmap
+#[allow(dead_code)]
+pub fn g_get_key_state(s: &str) -> bool
+{
+    *KEY_STATE.lock().unwrap().get(s).unwrap()
+}
+
+// Set a value in the key state hashmap
+pub fn g_set_key_state(s: &str, b: bool)
+{
+    KEY_STATE.lock().unwrap().insert(s!(s), b);
 }
 
 // Returns the cpu level global value
