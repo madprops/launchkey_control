@@ -224,6 +224,8 @@ pub fn process_trigger_event(e: TriggerEvent)
     }
 }
 
+// Thread that starts a check
+// to see if the system should scroll
 pub fn start_scroll_check()
 {
     thread::spawn(move || 
