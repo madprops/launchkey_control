@@ -1,5 +1,3 @@
-Started as a Bash script but it's now a Rust program.
-
 My own mappings to control my computer with the Launchkey MK2 25.
 
 As of now, it has mappings to change virtual desktops, change the system's audio volume, lock screen, put computer to sleep, alt tab, scroll, zoom in/out, move windows between monitors, play/pause song, next/previous song.
