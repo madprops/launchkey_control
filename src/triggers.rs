@@ -316,7 +316,6 @@ pub fn start_scroll_check()
             if direction == 1 {run_command("xdotool click 4")}
             else if direction == 2 {run_command("xdotool click 5")}
 
-            // Define the check speed here
             thread::sleep(time::Duration::from_millis(SCROLL_DELAY));
         }
     });
