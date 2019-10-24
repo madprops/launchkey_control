@@ -244,7 +244,7 @@ pub fn process_trigger_event(e: TriggerEvent)
                         "off" => 
                         {
                             let color = g_get_led_color(pos);
-                            change_led(pos, &color);
+                            change_led(pos, &color, true);
                         },
                         _ => {}
                     }

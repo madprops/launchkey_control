@@ -11,8 +11,10 @@ use std::
 };
 
 // Light up or turn off a led
-pub fn change_led(n: usize, color: &str)
+pub fn change_led(n: usize, color: &str, force: bool)
 {
+    if !force && color == g_get_led_color(n) {return}
+
     run_command(&format!("amidi -p hw:2,0,1 -S 9F {} {}", 
         g_get_pad(n), g_get_color(color)));
     
@@ -38,7 +40,7 @@ pub fn change_led_range(n1: usize, n2: usize, color: &str)
 {
     for x in n1..=n2
     {
-        change_led(x, color);
+        change_led(x, color, false);
     }
 }
 
@@ -74,8 +76,13 @@ pub fn update_leds()
 
     if g_get_cpu_level() != level
     {
-        turn_leds_off("top");
         change_led_range(1, level, led_color(level));
+
+        if level < 8
+        {
+            change_led_range(1 + level, 8, "off");
+        }
+
         g_set_cpu_level(level);
     }
 
@@ -86,8 +93,13 @@ pub fn update_leds()
 
     if g_get_ram_level() != level
     {
-        turn_leds_off("bottom");
         change_led_range(9, 8 + level, led_color(level));
+
+        if level < 8
+        {
+            change_led_range(9 + level, 16, "off");
+        }
+
         g_set_ram_level(level);
     }
 }
