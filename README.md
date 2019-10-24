@@ -16,5 +16,9 @@ In the image below you can see the Launchkey with the indicator leds. The top ro
 
 ![](https://i.imgur.com/NtrsZtr.jpg)
 
+Having aseqdump and amidi installed is required.
+Default mapped operations depend on xdotool.
+`sudo apt install alsa-utils xdotool`
+
 Tip: Cover the octave buttons. Put something on top to avoid accidental note offsets.
 Tip: Don't change the track offset. This happens when you press both of them at the same time.
