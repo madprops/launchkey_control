@@ -3,36 +3,13 @@ use crate::
     s, run_command,
     config::*,
     globals::*,
-    leds::*,
+    listeners::*,
 };
 
 use std::
 {
     thread, time,
-    process::
-    {
-        Command, Stdio,
-    },
-    io::
-    {
-        BufReader, BufRead,
-    },
 };
-
-// Struct that holds data
-// about a key/slider event
-#[allow(dead_code)]
-pub struct TriggerEvent
-{
-    source: String,
-    event_1: String,
-    event_2: String,
-    channel: String,
-    label_1: String,
-    data_1: String,
-    label_2: String,
-    data_2: String,
-}
 
 // Execute a function associated with a key
 // Either when a key is pressed or released
@@ -159,52 +136,8 @@ pub fn get_key_position(note: String) -> String
     else {s!("")}
 }
 
-// Start listening to key or slider events
-pub fn start_trigger_listener()
-{
-    let mut cmd = Command::new("aseqdump")
-                    .arg("-p")
-                    .arg("Launchkey MK2 25")
-                    .stdout(Stdio::piped())
-                    .spawn()
-                    .unwrap();
-
-    {
-        let stdout = cmd.stdout.as_mut().unwrap();
-        let stdout_reader = BufReader::new(stdout);
-        let stdout_lines = stdout_reader.lines();
-
-        for line in stdout_lines
-        {
-            let chunks: Vec<String> = line.unwrap()
-                                .split_whitespace()
-                                .map(|x| s!(x.replace(",", "").trim()))
-                                .collect();
-
-            if chunks[0] == "Waiting" || chunks[0] == "Source"
-            {
-                continue;
-            }
-
-            let event = TriggerEvent
-            {
-                source: s!(chunks.get(0).unwrap_or(&s!(""))),
-                event_1: s!(chunks.get(1).unwrap_or(&s!(""))),
-                event_2: s!(chunks.get(2).unwrap_or(&s!(""))),
-                channel: s!(chunks.get(3).unwrap_or(&s!(""))),
-                label_1: s!(chunks.get(4).unwrap_or(&s!(""))),
-                data_1: s!(chunks.get(5).unwrap_or(&s!(""))),
-                label_2: s!(chunks.get(6).unwrap_or(&s!(""))),
-                data_2: s!(chunks.get(7).unwrap_or(&s!(""))),
-            };
-
-            process_trigger_event(event);
-        }
-    }
-}
-
 // Detect and react to key or slider events
-pub fn process_trigger_event(e: TriggerEvent)
+pub fn process_midi_event(e: MidiEvent)
 {
     match &e.event_1[..]
     {
@@ -219,11 +152,13 @@ pub fn process_trigger_event(e: TriggerEvent)
 
                     match &e.event_2[..]
                     {
+                        // Press
                         "on" =>
                         {
                             g_set_key_state(&pos, true);
                             key_function(&pos, "on");
                         },
+                        // Release
                         "off" =>
                         {
                             g_set_key_state(&pos, false);
@@ -233,19 +168,17 @@ pub fn process_trigger_event(e: TriggerEvent)
                     }
                 }
                 // Drum pads
-                "9" =>  
+                "15" =>  
                 {
                     let n = e.data_1.parse::<usize>().unwrap();
                     let pos = get_pad_position(n);
 
                     match &e.event_2[..]
                     {
+                        // Press
                         "on" => pad_function(pos),
-                        "off" => 
-                        {
-                            let color = g_get_led_color(pos);
-                            change_led(pos, &color, true);
-                        },
+                        // Release
+                        "off" => {},
                         _ => {}
                     }
                 },
@@ -281,22 +214,31 @@ pub fn process_trigger_event(e: TriggerEvent)
                 "7" => {},
                 // Stop button
                 "114" => 
-                if e.data_2 == "127"
                 {
-                    run_command("systemctl suspend");
+                    // Press
+                    if e.data_2 == "127"
+                    {
+                        run_command("systemctl suspend");
+                    }
                 },
                 // Track left
-                "103" => 
-                if e.data_2 == "127"
+                "102" => 
                 {
-                    run_command("xdotool key XF86AudioPrev");
+                    // Press
+                    if e.data_2 == "127"
+                    {
+                        run_command("xdotool key XF86AudioPrev");
+                    }
                 },
                 // Track right
-                "102" =>
-                if e.data_2 == "127"
+                "103" =>
                 {
-                    run_command("xdotool key XF86AudioNext");
-                }
+                    // Press
+                    if e.data_2 == "127"
+                    {
+                        run_command("xdotool key XF86AudioNext");
+                    }
+                },
                 _ => {}
             }
         },

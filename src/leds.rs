@@ -1,6 +1,6 @@
 use crate::
 {
-    run_command,
+    midi_signal,
     config::*,
     globals::*,
 };
@@ -14,10 +14,7 @@ use std::
 pub fn change_led(n: usize, color: &str, force: bool)
 {
     if !force && color == g_get_led_color(n) {return}
-
-    run_command(&format!("amidi -p hw:2,0,1 -S 9F {} {}", 
-        g_get_pad(n), g_get_color(color)));
-    
+    midi_signal(&format!("9F {} {}", g_get_pad(n), g_get_color(color)));
     g_set_led_color(n, color);
 }
 
