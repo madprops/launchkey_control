@@ -16,8 +16,9 @@ In the image below you can see the Launchkey with the indicator leds. The top ro
 
 ![](https://i.imgur.com/NtrsZtr.jpg)
 
-Having aseqdump and amidi installed is required.
-Default mapped operations depend on xdotool.
+Having `aseqdump` and `amidi` installed is required.
+
+Default mapped operations depend on `xdotool`.
 
 `sudo apt install alsa-utils xdotool`
 
