@@ -59,16 +59,26 @@ fn cleanup()
 }
 
 // Runs a command
-fn run_command(cmd: &str)
+fn run_command(cmd: &str, spawn: bool)
 {
-    Command::new("sh").arg("-c").arg(cmd)
-        .spawn().expect("Can't run command.");
+    let mut sh = Command::new("sh");
+    let c = sh.arg("-c").arg(cmd);
+
+    if spawn 
+    {
+        c.spawn().expect("Can't run command.");
+    }
+
+    else 
+    {
+        c.status().expect("Can't run command.");
+    }
 }
 
 // Sends a midi signal
 fn midi_signal(hex: &str)
 {
-    run_command(&format!("amidi -p {} -S {}", MIDI_PORT_3, hex));
+    run_command(&format!("amidi -p {} -S {}", MIDI_PORT_3, hex), false);
 }
 
 // Sets the controller to extended or basic mode
