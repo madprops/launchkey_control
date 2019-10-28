@@ -270,22 +270,22 @@ fn get_pad_position(n: usize) -> usize
 {
     let fst = FIRST_PAD;
 
-    if n == fst {9}
-    else if n == fst + 1 {10}
-    else if n == fst + 2 {11}
-    else if n == fst + 3 {12}
-    else if n == fst + 4 {1}
-    else if n == fst + 5 {2}
-    else if n == fst + 6 {3}
-    else if n == fst + 7 {4}
-    else if n == fst + 8 {13}
-    else if n == fst + 9 {14}
-    else if n == fst + 10 {15}
-    else if n == fst + 11 {16}
-    else if n == fst + 12 {5}
-    else if n == fst + 13 {6}
-    else if n == fst + 14 {7}
-    else if n == fst + 15 {8}
+    if n == fst {1}
+    else if n == fst + 1 {2}
+    else if n == fst + 2 {3}
+    else if n == fst + 3 {4}
+    else if n == fst + 4 {5}
+    else if n == fst + 5 {6}
+    else if n == fst + 6 {7}
+    else if n == fst + 7 {8}
+    else if n == fst + 16 {9}
+    else if n == fst + 17 {10}
+    else if n == fst + 18 {11}
+    else if n == fst + 19 {12}
+    else if n == fst + 20 {13}
+    else if n == fst + 21 {14}
+    else if n == fst + 22 {15}
+    else if n == fst + 23 {16}
     else {0}
 }
 
@@ -297,8 +297,8 @@ fn pad_function(n: usize)
     match n
     {
         // First row
-        1 => {},
-        2 => {},
+        1 => run_command("ksysguard"),
+        2 => run_command("kcalc"),
         3 => {},
         4 => {},
         5 => {},
@@ -308,7 +308,7 @@ fn pad_function(n: usize)
 
         // Second row
         9 => run_command("xdotool key XF86AudioPlay"),
-        10 => {},
+        10 => run_command("dolphin"),
         11 => {},
         12 => {},
         13 => {},

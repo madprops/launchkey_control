@@ -62,7 +62,7 @@ fn cleanup()
 fn run_command(cmd: &str)
 {
     Command::new("sh").arg("-c").arg(cmd)
-        .status().expect("Can't run command.");
+        .spawn().expect("Can't run command.");
 }
 
 // Sends a midi signal

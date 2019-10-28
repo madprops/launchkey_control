@@ -24,7 +24,7 @@ pub const MIDI_PORT_3: &'static str = "hw:2,0,1";
 pub const FIRST_KEY: usize = 48;
 
 // This is the number of the first drum pad
-pub const FIRST_PAD: usize = 112;
+pub const FIRST_PAD: usize = 96;
 
 // How often an iteration in the 
 // scroll check thread happens
