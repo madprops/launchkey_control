@@ -1,6 +1,7 @@
 use crate::
 {
-    s, run_command,
+    s, debug,
+    run_command,
     config::*,
     globals::*,
     listeners::*,
@@ -99,7 +100,7 @@ pub fn key_function(s: &str, mode: &str)
 
 // Gets the key positon
 // i.e note 48 -> w1
-pub fn get_key_position(note: String) -> String
+pub fn get_key_position(note: &str) -> String
 {
     let fst = FIRST_KEY;
     let n = note.parse::<usize>().unwrap();
@@ -148,19 +149,21 @@ pub fn process_midi_event(e: MidiEvent)
                 // Keys
                 "0" => 
                 {
-                    let pos = get_key_position(e.data_1);
+                    let pos = get_key_position(&e.data_1);
 
                     match &e.event_2[..]
                     {
                         // Press
                         "on" =>
                         {
+                            debug(&format!("Key {} on", &e.data_1));
                             g_set_key_state(&pos, true);
                             key_function(&pos, "on");
                         },
                         // Release
                         "off" =>
                         {
+                            debug(&format!("Key {} off", &e.data_1));
                             g_set_key_state(&pos, false);
                             key_function(&pos, "off");
                         },
@@ -176,9 +179,25 @@ pub fn process_midi_event(e: MidiEvent)
                     match &e.event_2[..]
                     {
                         // Press
-                        "on" => pad_function(pos),
+                        "on" => 
+                        {
+                            debug(&format!("Pad {} on", &e.data_1));
+
+                            match &e.data_1[..]
+                            {
+                                // Top arrow button
+                                "104" => run_command("~/scripts/audioswitch speakers", true),
+                                // Bottom arrow button
+                                "120" => run_command("~/scripts/audioswitch headphones", true),
+                                // Normal pads
+                                _ => pad_function(pos)
+                            }
+                        }
                         // Release
-                        "off" => {},
+                        "off" =>
+                        {
+                            debug(&format!("Pad {} off", &e.data_1));
+                        },
                         _ => {}
                     }
                 },
@@ -188,6 +207,7 @@ pub fn process_midi_event(e: MidiEvent)
         // Pitch bend
         "Pitch" =>
         {
+            debug(&format!("Pitch {}", &e.data_1));
             let n = e.data_1.parse::<isize>().unwrap();
             let direction = if n > 0 {1} else if n < 0 {2} else {0};
             g_set_scroll_direction(direction);
@@ -195,6 +215,8 @@ pub fn process_midi_event(e: MidiEvent)
         // Other controls
         "Control" =>
         {
+            debug(&format!("Control {} {}", &e.data_1, &e.data_2));
+
             match &e.data_1[..]
             {
                 // Curved right slider

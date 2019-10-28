@@ -1,5 +1,6 @@
 use crate::
 {
+    debug,
     midi_signal,
     config::*,
     globals::*,
@@ -16,6 +17,7 @@ pub fn change_led(n: usize, color: &str, force: bool)
     if !force && color == g_get_led_color(n) {return}
     midi_signal(&format!("9F {} {}", g_get_pad(n), g_get_color(color)));
     g_set_led_color(n, color);
+    debug(&format!("Led {} {}", n, color));
 }
 
 // Turn some or all leds off

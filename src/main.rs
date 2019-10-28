@@ -91,3 +91,12 @@ fn switch_mode(mode: &str)
         _ => {}
     }
 }
+
+// Function used for debugging information
+fn debug(s: &str)
+{
+    if DEBUG
+    {
+        p!(s);
+    }
+}

@@ -40,3 +40,7 @@ pub const SCROLL_DELAY: u64 = 200;
 // Lower number = More led color updates
 // This value represents seconds
 pub const LED_DELAY: u64 = 5;
+
+// If this is enabled the program will output
+// some useful information for debugging
+pub const DEBUG: bool = true;
