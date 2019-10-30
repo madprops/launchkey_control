@@ -41,7 +41,7 @@ pub fn key_function(s: &str, mode: &str)
                 "w11" => {},
                 "w12" => {},
                 "w13" => {},
-                "w14" => {},
+                "w14" => run_command("xdotool key Super_L+Shift+l", true),
                 "w15" => run_command("xdotool key Super_L+l", true),
 
                 // Black keys
