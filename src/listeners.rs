@@ -1,7 +1,7 @@
 use crate::
 {
     s,
-    config::*,
+    globals::*,
     triggers::*,
 };
 
@@ -80,7 +80,7 @@ fn start_listener(port: &str)
 // Start listening to key or slider events
 pub fn start_main_listener()
 {
-    start_listener(MIDI_PORT_1);
+    start_listener(&conf().midi_port_1);
 }
 
 // Listener for InControl events
@@ -88,6 +88,6 @@ pub fn start_ic_listener()
 {
     thread::spawn(move || 
     {
-        start_listener(MIDI_PORT_2);    
+        start_listener(&conf().midi_port_2);    
     });
 }

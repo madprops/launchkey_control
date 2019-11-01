@@ -9,7 +9,7 @@ mod leds;
 
 use crate::
 {
-    config::*,
+    globals::*,
     listeners::*,
     triggers::*,
     leds::*,
@@ -59,26 +59,30 @@ fn cleanup()
 }
 
 // Runs a command
-fn run_command(cmd: &str, spawn: bool)
+fn run_command(cmd: &str)
 {
-    let mut sh = Command::new("sh");
-    let c = sh.arg("-c").arg(cmd);
+    Command::new("sh").arg("-c").arg(cmd)
+        .status().expect("Can't run command.");
+}
 
-    if spawn 
-    {
-        c.spawn().expect("Can't run command.");
-    }
+fn spawn_command(cmd: &str)
+{
+    Command::new("sh").arg("-c").arg(cmd)
+        .spawn().expect("Can't spawn command.");
+}
 
-    else 
-    {
-        c.status().expect("Can't run command.");
-    }
+fn command_output(cmd: &str) -> String
+{
+    let o = Command::new("sh").arg("-c").arg(cmd)
+        .output().expect("Can't get command output.");
+    
+    String::from_utf8_lossy(&o.stdout).to_string()
 }
 
 // Sends a midi signal
 fn midi_signal(hex: &str)
 {
-    run_command(&format!("amidi -p {} -S {}", MIDI_PORT_3, hex), false);
+    run_command(&format!("amidi -p {} -S {}", conf().midi_port_2_b, hex));
 }
 
 // Sets the controller to extended or basic mode
@@ -95,7 +99,7 @@ fn switch_mode(mode: &str)
 // Function used for debugging information
 fn debug(s: &str)
 {
-    if DEBUG
+    if conf().debug
     {
         p!(s);
     }

@@ -1,8 +1,7 @@
 use crate::
 {
     s, debug,
-    run_command,
-    config::*,
+    spawn_command,
     globals::*,
     listeners::*,
 };
@@ -28,10 +27,10 @@ pub fn key_function(s: &str, mode: &str)
             match s
             {
                 // White keys
-                "w1" => run_command("wmctrl -s 0", true),
-                "w2" => run_command("wmctrl -s 1", true),
-                "w3" => run_command("wmctrl -s 2", true),
-                "w4" => run_command("wmctrl -s 3", true),
+                "w1" => spawn_command("wmctrl -s 0"),
+                "w2" => spawn_command("wmctrl -s 1"),
+                "w3" => spawn_command("wmctrl -s 2"),
+                "w4" => spawn_command("wmctrl -s 3"),
                 "w5" => {},
                 "w6" => {},
                 "w7" => {},
@@ -41,20 +40,20 @@ pub fn key_function(s: &str, mode: &str)
                 "w11" => {},
                 "w12" => {},
                 "w13" => {},
-                "w14" => run_command("xdotool key Super_L+Shift+l", true),
-                "w15" => run_command("xdotool key Super_L+l", true),
+                "w14" => spawn_command("xdotool key Super_L+Shift+l"),
+                "w15" => spawn_command("xdotool key Super_L+l"),
 
                 // Black keys
-                "b1" => run_command("xdotool key Super_L+Ctrl+Left", true),
-                "b2" => run_command("xdotool key Super_L+Ctrl+Right", true),
-                "b3" => run_command("xdotool keydown Super_R", true),
-                "b4" => run_command("xdotool keydown Shift", true),
-                "b5" => run_command("xdotool keydown Return", true),
-                "b6" => run_command("xdotool key Super_L+Ctrl+Shift+Left", true),
-                "b7" => run_command("xdotool key Super_L+Ctrl+Shift+Right", true),
-                "b8" => run_command("xdotool keydown Ctrl", true),
-                "b9" => run_command("xdotool keydown minus", true),
-                "b10" => run_command("xdotool keydown plus", true),
+                "b1" => spawn_command("xdotool key Super_L+Ctrl+Left"),
+                "b2" => spawn_command("xdotool key Super_L+Ctrl+Right"),
+                "b3" => spawn_command("xdotool keydown Super_R"),
+                "b4" => spawn_command("xdotool keydown Shift"),
+                "b5" => spawn_command("xdotool keydown Return"),
+                "b6" => spawn_command("xdotool key Super_L+Ctrl+Shift+Left"),
+                "b7" => spawn_command("xdotool key Super_L+Ctrl+Shift+Right"),
+                "b8" => spawn_command("xdotool keydown Ctrl"),
+                "b9" => spawn_command("xdotool keydown minus"),
+                "b10" => spawn_command("xdotool keydown plus"),
                 _ => {}
             }
         },
@@ -83,14 +82,14 @@ pub fn key_function(s: &str, mode: &str)
                 // Black keys
                 "b1" => {},
                 "b2" => {},
-                "b3" => run_command("xdotool keyup Super_R", true),
-                "b4" => run_command("xdotool keyup Shift", true),
-                "b5" => run_command("xdotool keyup Return", true),
+                "b3" => spawn_command("xdotool keyup Super_R"),
+                "b4" => spawn_command("xdotool keyup Shift"),
+                "b5" => spawn_command("xdotool keyup Return"),
                 "b6" => {},
                 "b7" => {},
-                "b8" => run_command("xdotool keyup Ctrl", true),
-                "b9" => run_command("xdotool keyup minus", true),
-                "b10" => run_command("xdotool keyup plus", true),
+                "b8" => spawn_command("xdotool keyup Ctrl"),
+                "b9" => spawn_command("xdotool keyup minus"),
+                "b10" => spawn_command("xdotool keyup plus"),
                 _ => {}
             }
         },
@@ -102,7 +101,7 @@ pub fn key_function(s: &str, mode: &str)
 // i.e note 48 -> w1
 pub fn get_key_position(note: &str) -> String
 {
-    let fst = FIRST_KEY;
+    let fst = conf().first_key;
     let n = note.parse::<usize>().unwrap();
 
     // White keys
@@ -186,9 +185,9 @@ pub fn process_midi_event(e: MidiEvent)
                             match &e.data_1[..]
                             {
                                 // Top arrow button
-                                "104" => run_command("~/scripts/audioswitch speakers", true),
+                                "104" => spawn_command("~/scripts/audioswitch speakers"),
                                 // Bottom arrow button
-                                "120" => run_command("~/scripts/audioswitch headphones", true),
+                                "120" => spawn_command("~/scripts/audioswitch headphones"),
                                 // Normal pads
                                 _ => pad_function(pos)
                             }
@@ -230,7 +229,7 @@ pub fn process_midi_event(e: MidiEvent)
                         pactl set-sink-volume $sink {:.*}\n\
                     done", 2, v);
 
-                    run_command(&cmd, true);
+                    spawn_command(&cmd);
                 },
                 // Linear slider
                 "7" => {},
@@ -240,7 +239,7 @@ pub fn process_midi_event(e: MidiEvent)
                     // Press
                     if e.data_2 == "127"
                     {
-                        run_command("systemctl suspend", true);
+                        spawn_command("systemctl suspend");
                     }
                 },
                 // Track left
@@ -249,7 +248,7 @@ pub fn process_midi_event(e: MidiEvent)
                     // Press
                     if e.data_2 == "127"
                     {
-                        run_command("xdotool key XF86AudioPrev", true);
+                        spawn_command("xdotool key XF86AudioPrev");
                     }
                 },
                 // Track right
@@ -258,7 +257,7 @@ pub fn process_midi_event(e: MidiEvent)
                     // Press
                     if e.data_2 == "127"
                     {
-                        run_command("xdotool key XF86AudioNext", true);
+                        spawn_command("xdotool key XF86AudioNext");
                     }
                 },
                 _ => {}
@@ -277,10 +276,10 @@ pub fn start_scroll_check()
         loop
         {
             let direction = g_get_scroll_direction();
-            if direction == 1 {run_command("xdotool click 4", true)}
-            else if direction == 2 {run_command("xdotool click 5", true)}
+            if direction == 1 {spawn_command("xdotool click 4")}
+            else if direction == 2 {spawn_command("xdotool click 5")}
 
-            thread::sleep(time::Duration::from_millis(SCROLL_DELAY));
+            thread::sleep(time::Duration::from_millis(conf().scroll_delay));
         }
     });
 }
@@ -290,7 +289,7 @@ pub fn start_scroll_check()
 // then bottom left -> bottom right
 fn get_pad_position(n: usize) -> usize
 {
-    let fst = FIRST_PAD;
+    let fst = conf().first_pad;
 
     if n == fst {1}
     else if n == fst + 1 {2}
@@ -319,8 +318,8 @@ fn pad_function(n: usize)
     match n
     {
         // First row
-        1 => run_command("ksysguard", true),
-        2 => run_command("kcalc", true),
+        1 => spawn_command("ksysguard"),
+        2 => spawn_command("kcalc"),
         3 => {},
         4 => {},
         5 => {},
@@ -329,8 +328,8 @@ fn pad_function(n: usize)
         8 => {},
 
         // Second row
-        9 => run_command("xdotool key XF86AudioPlay", true),
-        10 => run_command("dolphin", true),
+        9 => spawn_command("xdotool key XF86AudioPlay"),
+        10 => spawn_command("dolphin"),
         11 => {},
         12 => {},
         13 => {},

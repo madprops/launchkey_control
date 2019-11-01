@@ -2,7 +2,6 @@ use crate::
 {
     debug,
     midi_signal,
-    config::*,
     globals::*,
 };
 
@@ -111,7 +110,7 @@ pub fn start_led_check()
         loop
         {
             update_leds();
-            thread::sleep(time::Duration::from_secs(LED_DELAY));
+            thread::sleep(time::Duration::from_secs(conf().led_delay));
         }
     });
 }

@@ -1,6 +1,7 @@
 use crate::
 {
     s, hashmap,
+    config::*,
 };
 
 use std::
@@ -104,6 +105,7 @@ lazy_static!
         16 => s!("off")
     });
 
+    static ref CONFIG: Config = make_config();
     static ref CPU_LEVEL: AtomicUsize = AtomicUsize::new(0);
     static ref RAM_LEVEL: AtomicUsize = AtomicUsize::new(0);
     static ref SCROLL_DIRECTION: AtomicUsize = AtomicUsize::new(0);
@@ -182,4 +184,10 @@ pub fn g_get_scroll_direction() -> usize
 pub fn g_set_scroll_direction(n: usize)
 {
     SCROLL_DIRECTION.store(n, Ordering::SeqCst)
+}
+
+// Get the config struct
+pub fn conf() -> &'static Config
+{
+    &CONFIG
 }
