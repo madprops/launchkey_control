@@ -5,6 +5,7 @@ mod config;
 mod globals;
 mod listeners;
 mod triggers;
+mod functions;
 mod leds;
 
 use crate::
