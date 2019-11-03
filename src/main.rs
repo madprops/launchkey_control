@@ -4,7 +4,7 @@ mod macros;
 mod config;
 mod globals;
 mod listeners;
-mod triggers;
+mod events;
 mod functions;
 mod leds;
 
@@ -12,7 +12,7 @@ use crate::
 {
     globals::*,
     listeners::*,
-    triggers::*,
+    events::*,
     leds::*,
 };
 

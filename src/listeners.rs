@@ -2,7 +2,7 @@ use crate::
 {
     s,
     globals::*,
-    triggers::*,
+    events::*,
 };
 
 use std::
