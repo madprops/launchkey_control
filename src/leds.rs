@@ -110,7 +110,7 @@ pub fn start_led_check()
         loop
         {
             update_leds();
-            thread::sleep(time::Duration::from_secs(conf().led_delay));
+            thread::sleep(time::Duration::from_millis(conf().led_delay));
         }
     });
 }
