@@ -133,7 +133,7 @@ pub fn pad_bottom_arrow_function()
 }
 
 // Pitch bend
-pub fn pitch_function(data: &String)
+pub fn pitch_function(data: &str)
 {
     let n = data.parse::<isize>().unwrap();
     let direction = if n > 0 {1} else if n < 0 {2} else {0};
@@ -141,7 +141,7 @@ pub fn pitch_function(data: &String)
 }
 
 // Modulation slider
-pub fn mod_slider_function(data: &String)
+pub fn mod_slider_function(data: &str)
 {
     // Change volume
     let v:f64 = data.parse::<f64>().unwrap() / 127.0;
