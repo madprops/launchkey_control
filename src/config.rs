@@ -56,6 +56,9 @@ pub struct Config
     // If this is enabled the program will output
     // some useful information for debugging
     pub debug: bool,
+
+    // Delay before the program begins to be operational
+    pub ready_delay: u64
 }
 
 pub fn make_config() -> Config
@@ -75,5 +78,6 @@ pub fn make_config() -> Config
         scroll_delay: 200,
         led_delay: 5000,
         debug: true,
+        ready_delay: 2000,
     }
 }

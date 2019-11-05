@@ -15,6 +15,8 @@ use std::
 // Detect and react to key or slider events
 pub fn process_midi_event(e: MidiEvent)
 {
+    if !g_get_ready() {return}
+
     match &e.event_1[..]
     {
         "Note" =>

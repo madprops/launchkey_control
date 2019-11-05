@@ -18,6 +18,7 @@ use crate::
 
 use std::
 {
+    time, thread,
     sync::
     {
         Arc,
@@ -45,6 +46,7 @@ fn main()
         turn_leds_off("both");
         start_led_check();
         start_scroll_check();
+        start_ready_countdown();
         start_ic_listener();
         start_main_listener();
     }
@@ -104,4 +106,19 @@ fn debug(s: &str)
     {
         p!(s);
     }
+}
+
+// Sets the program ready after some time
+// This is necesarry because using buttons
+// while the program is not running
+// will add them to a queue that is
+// executed right as the program starts
+fn start_ready_countdown()
+{
+    thread::spawn(move || 
+    {
+        thread::sleep(time::Duration::from_millis(conf().ready_delay));
+        g_set_ready(true);
+        p!("Ready")
+    });
 }

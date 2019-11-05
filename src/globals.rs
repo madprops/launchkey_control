@@ -12,7 +12,9 @@ use std::
         Mutex,
         atomic::
         {
-            AtomicUsize, Ordering
+            AtomicUsize,
+            AtomicBool,
+            Ordering
         },
     },
 };
@@ -109,6 +111,7 @@ lazy_static!
     static ref CPU_LEVEL: AtomicUsize = AtomicUsize::new(0);
     static ref RAM_LEVEL: AtomicUsize = AtomicUsize::new(0);
     static ref SCROLL_DIRECTION: AtomicUsize = AtomicUsize::new(0);
+    static ref READY: AtomicBool = AtomicBool::new(false);
 }
 
 // Getters and setters for globals
@@ -184,6 +187,18 @@ pub fn g_get_scroll_direction() -> usize
 pub fn g_set_scroll_direction(n: usize)
 {
     SCROLL_DIRECTION.store(n, Ordering::SeqCst)
+}
+
+// Returns the ready value
+pub fn g_get_ready() -> bool
+{
+    READY.load(Ordering::SeqCst)
+}
+
+// Sets the ready global value
+pub fn g_set_ready(b: bool)
+{
+    READY.store(b, Ordering::SeqCst)
 }
 
 // Get the config struct
