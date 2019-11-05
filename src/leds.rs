@@ -1,13 +1,14 @@
 use crate::
 {
     debug,
+    sleep,
     midi_signal,
     globals::*,
 };
 
 use std::
 {
-    thread, time,
+    thread,
 };
 
 // Light up or turn off a led
@@ -110,7 +111,7 @@ pub fn start_led_check()
         loop
         {
             update_leds();
-            thread::sleep(time::Duration::from_millis(conf().led_delay));
+            sleep(g_get_led_delay());
         }
     });
 }

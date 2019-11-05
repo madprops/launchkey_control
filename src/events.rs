@@ -1,6 +1,7 @@
 use crate::
 {
     s, debug,
+    sleep,
     spawn_command,
     globals::*,
     listeners::*,
@@ -9,7 +10,7 @@ use crate::
 
 use std::
 {
-    thread, time,
+    thread,
 };
 
 // Detect and react to key or slider events
@@ -136,7 +137,7 @@ pub fn process_midi_event(e: MidiEvent)
 // i.e note 48 -> w1
 pub fn get_key_position(note: &str) -> String
 {
-    let fst = conf().first_key;
+    let fst = g_get_first_key();
     let n = note.parse::<usize>().unwrap();
 
     // White keys
@@ -183,7 +184,7 @@ pub fn start_scroll_check()
             if direction == 1 {spawn_command("xdotool click 4")}
             else if direction == 2 {spawn_command("xdotool click 5")}
 
-            thread::sleep(time::Duration::from_millis(conf().scroll_delay));
+            sleep(g_get_scroll_delay());
         }
     });
 }
@@ -193,7 +194,7 @@ pub fn start_scroll_check()
 // then bottom left -> bottom right
 fn get_pad_position(n: usize) -> usize
 {
-    let fst = conf().first_pad;
+    let fst = g_get_first_pad();
 
     if n == fst {1}
     else if n == fst + 1 {2}

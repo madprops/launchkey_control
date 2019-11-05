@@ -33,8 +33,8 @@ pub fn key_function(s: &str, mode: &str)
                 "w11" => {},
                 "w12" => {},
                 "w13" => {},
-                "w14" => spawn_command("xdotool key Super_L+Ctrl+Shift+l"),
-                "w15" => spawn_command("xdotool key Super_L+Ctrl+l"),
+                "w14" => spawn_command("xdotool key Ctrl+Super_L+Shift+l"),
+                "w15" => spawn_command("xdotool key Ctrl+Super_L+l"),
 
                 // Black keys
                 "b1" => spawn_command("xdotool key Super_L+Ctrl+Left"),
