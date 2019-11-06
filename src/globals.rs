@@ -262,14 +262,8 @@ pub fn g_get_debug() -> bool
 // Helpsers
 
 #[allow(dead_code)]
-pub fn g_get_key_press_count() -> u8
+pub fn g_get_key_press_count() -> usize
 {
-    let mut n = 0;
-
-    for pressed in KEY_STATE.lock().unwrap().iter()
-    {
-        if *pressed.1 {n += 1}
-    }
-
-    n
+    KEY_STATE.lock().unwrap()
+        .iter().filter(|&p| *p.1).count()
 }
