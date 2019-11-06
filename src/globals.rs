@@ -258,3 +258,18 @@ pub fn g_get_debug() -> bool
 {
     DEBUG.load(Ordering::SeqCst)
 }
+
+// Helpsers
+
+#[allow(dead_code)]
+pub fn g_get_key_press_count() -> u8
+{
+    let mut n = 0;
+
+    for pressed in KEY_STATE.lock().unwrap().iter()
+    {
+        if *pressed.1 {n += 1}
+    }
+
+    n
+}

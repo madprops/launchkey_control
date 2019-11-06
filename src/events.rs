@@ -42,8 +42,12 @@ pub fn process_midi_event(e: MidiEvent)
                         "off" =>
                         {
                             debug(&format!("Key {} off", &e.data_1));
-                            g_set_key_state(&pos, false);
-                            key_function(&pos, "off");
+
+                            if g_get_key_state(&pos)
+                            {
+                                g_set_key_state(&pos, false);
+                                key_function(&pos, "off");
+                            }
                         },
                         _ => {}
                     }

@@ -37,13 +37,13 @@ pub fn key_function(s: &str, mode: &str)
                 "w15" => spawn_command("/home/yo/scripts/lockscreen.sh lower"),
 
                 // Black keys
-                "b1" => spawn_command("xdotool key Super_L+Ctrl+Left"),
-                "b2" => spawn_command("xdotool key Super_L+Ctrl+Right"),
+                "b1" => spawn_command("/home/yo/scripts/maximize.sh"),
+                "b2" => spawn_command("/home/yo/scripts/window_screen_move.sh"),
                 "b3" => spawn_command("xdotool keydown Super_R"),
                 "b4" => spawn_command("xdotool keydown Shift"),
                 "b5" => spawn_command("xdotool keydown Return"),
-                "b6" => spawn_command("xdotool key Super_L+Ctrl+Shift+Left"),
-                "b7" => spawn_command("xdotool key Super_L+Ctrl+Shift+Right"),
+                "b6" => spawn_command(""),
+                "b7" => spawn_command(""),
                 "b8" => spawn_command("xdotool keydown Ctrl"),
                 "b9" => spawn_command("xdotool keydown minus"),
                 "b10" => spawn_command("xdotool keydown plus"),
