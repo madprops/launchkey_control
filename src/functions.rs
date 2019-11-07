@@ -38,10 +38,10 @@ pub fn key_function(s: &str, mode: &str)
 
                 // Black keys
                 "b1" => spawn_command("/home/yo/scripts/maximize.sh"),
-                "b2" => spawn_command("/home/yo/scripts/window_screen_move.sh"),
-                "b3" => spawn_command("xdotool keydown Super_R"),
-                "b4" => spawn_command("xdotool keydown Shift"),
-                "b5" => spawn_command("xdotool keydown Return"),
+                "b2" => spawn_command("/home/yo/scripts/minimize.sh"),
+                "b3" => spawn_command("/home/yo/scripts/window_screen_move.sh"),
+                "b4" => spawn_command(""),
+                "b5" => spawn_command(""),
                 "b6" => spawn_command(""),
                 "b7" => spawn_command(""),
                 "b8" => spawn_command("xdotool keydown Ctrl"),
@@ -75,9 +75,9 @@ pub fn key_function(s: &str, mode: &str)
                 // Black keys
                 "b1" => {},
                 "b2" => {},
-                "b3" => spawn_command("xdotool keyup Super_R"),
-                "b4" => spawn_command("xdotool keyup Shift"),
-                "b5" => spawn_command("xdotool keyup Return"),
+                "b3" => spawn_command(""),
+                "b4" => spawn_command(""),
+                "b5" => spawn_command(""),
                 "b6" => {},
                 "b7" => {},
                 "b8" => spawn_command("xdotool keyup Ctrl"),
@@ -123,13 +123,13 @@ pub fn pad_function(n: usize)
 // Arrow button to the right of the apds
 pub fn pad_top_arrow_function()
 {
-    spawn_command("~/scripts/audioswitch speakers");
+    // spawn_command("~/scripts/audioswitch speakers");
 }
 
 // Arrow button to the right of the apds
 pub fn pad_bottom_arrow_function()
 {
-    spawn_command("~/scripts/audioswitch headphones");
+    // spawn_command("~/scripts/audioswitch headphones");
 }
 
 // Pitch bend
