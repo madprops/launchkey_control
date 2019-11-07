@@ -37,11 +37,11 @@ pub fn key_function(s: &str, mode: &str)
                 "w15" => spawn_command("/home/yo/scripts/lockscreen.sh lower"),
 
                 // Black keys
-                "b1" => spawn_command("/home/yo/scripts/maximize.sh"),
-                "b2" => spawn_command("/home/yo/scripts/minimize.sh"),
-                "b3" => spawn_command("/home/yo/scripts/window_screen_move.sh"),
-                "b4" => spawn_command(""),
-                "b5" => spawn_command(""),
+                "b1" => spawn_command("/home/yo/scripts/aktion.sh maximize"),
+                "b2" => spawn_command("/home/yo/scripts/aktion.sh minimize"),
+                "b3" => spawn_command("/home/yo/scripts/aktion.sh tile_left"),
+                "b4" => spawn_command("/home/yo/scripts/aktion.sh tile_right"),
+                "b5" => spawn_command("/home/yo/scripts/aktion.sh next_screen"),
                 "b6" => spawn_command(""),
                 "b7" => spawn_command(""),
                 "b8" => spawn_command("xdotool keydown Ctrl"),
