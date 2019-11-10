@@ -81,7 +81,7 @@ pub fn start_ic_listener()
 {
     thread::spawn(move || 
     {
-        start_listener(&g_get_midi_port_2());    
+        start_listener(&g_get_midi_port_2());
     });
 }
 
