@@ -40,6 +40,7 @@ fn main()
 
     switch_mode("extended");
     turn_leds_off("both");
+    g_set_leds_ready(true);
     start_led_check();
     start_scroll_check();
     start_ready_countdown();

@@ -112,6 +112,7 @@ lazy_static!
     static ref CPU_LEVEL: AtomicUsize = AtomicUsize::new(0);
     static ref RAM_LEVEL: AtomicUsize = AtomicUsize::new(0);
     static ref SCROLL_DIRECTION: AtomicUsize = AtomicUsize::new(0);
+    static ref LEDS_READY: AtomicBool = AtomicBool::new(false);
     static ref READY: AtomicBool = AtomicBool::new(false);
 
     // CONFIG
@@ -203,6 +204,16 @@ pub fn g_get_ready() -> bool
 pub fn g_set_ready(b: bool)
 {
     READY.store(b, Ordering::SeqCst)
+}
+
+pub fn g_get_leds_ready() -> bool
+{
+    LEDS_READY.load(Ordering::SeqCst)
+}
+
+pub fn g_set_leds_ready(b: bool)
+{
+    LEDS_READY.store(b, Ordering::SeqCst)
 }
 
 // Config Getters
