@@ -42,11 +42,11 @@ pub fn key_function(s: &str, mode: &str)
                 "b3" => spawn_command("/home/yo/scripts/aktion.sh tile_left"),
                 "b4" => spawn_command("/home/yo/scripts/aktion.sh tile_right"),
                 "b5" => spawn_command("/home/yo/scripts/aktion.sh next_screen"),
-                "b6" => spawn_command(""),
-                "b7" => spawn_command(""),
-                "b8" => spawn_command("xdotool keydown Ctrl"),
-                "b9" => spawn_command("xdotool keydown minus"),
-                "b10" => spawn_command("xdotool keydown plus"),
+                "b6" => spawn_command("/home/yo/lab/cursor.sh up"),
+                "b7" => spawn_command("/home/yo/lab/cursor.sh down"),
+                "b8" => spawn_command("/home/yo/lab/cursor.sh left"),
+                "b9" => {},
+                "b10" => spawn_command("/home/yo/lab/cursor.sh right"),
                 _ => {}
             }
         },
@@ -75,14 +75,14 @@ pub fn key_function(s: &str, mode: &str)
                 // Black keys
                 "b1" => {},
                 "b2" => {},
-                "b3" => spawn_command(""),
-                "b4" => spawn_command(""),
-                "b5" => spawn_command(""),
+                "b3" => {},
+                "b4" => {},
+                "b5" => {},
                 "b6" => {},
                 "b7" => {},
-                "b8" => spawn_command("xdotool keyup Ctrl"),
-                "b9" => spawn_command("xdotool keyup minus"),
-                "b10" => spawn_command("xdotool keyup plus"),
+                "b8" => {},
+                "b9" => {},
+                "b10" => {},
                 _ => {}
             }
         },

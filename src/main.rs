@@ -42,7 +42,7 @@ fn main()
     turn_leds_off("both");
     g_set_leds_ready(true);
     start_led_check();
-    start_scroll_check();
+    // start_scroll_check();
     start_ready_countdown();
     start_ic_listener();
     start_main_listener();
@@ -71,13 +71,13 @@ pub fn run_command(cmd: &str)
 
 pub fn spawn_command(cmd: &str)
 {
-    Command::new("sh").arg("-c").arg(cmd)
+    Command::new("bash").arg("-c").arg(cmd)
         .spawn().expect("Can't spawn command.");
 }
 
 pub fn command_output(cmd: &str) -> String
 {
-    let o = Command::new("sh").arg("-c").arg(cmd)
+    let o = Command::new("bash").arg("-c").arg(cmd)
         .output().expect("Can't get command output.");
 
     String::from_utf8_lossy(&o.stdout).to_string()
