@@ -1,30 +1,17 @@
-use crate::
-{
-    s, hashmap,
-    command_output,
-    config::*,
-};
+use crate::{command_output, config::*, hashmap, s};
 
-use std::
-{
+use std::{
     collections::HashMap,
-    sync::
-    {
+    sync::{
+        atomic::{AtomicBool, AtomicUsize, Ordering},
         Mutex,
-        atomic::
-        {
-            AtomicUsize,
-            AtomicBool,
-            Ordering
-        },
     },
 };
 
 use lazy_static::lazy_static;
 
 // Global variables/constants
-lazy_static!
-{
+lazy_static! {
     static ref PADS: HashMap<usize, &'static str> = hashmap!
     {
         1 => "60",
@@ -124,7 +111,7 @@ lazy_static!
     static ref MIDI_PORT_1_B: Mutex<String> = Mutex::new(command_output("amidi --list-devices | grep \"Launchkey MK2 25 MIDI 1\" \
                     | sed -n '/^IO/s/.*\\(hw[^ ]*\\).*/\\1/p' | tr -d '\n'"));
     static ref MIDI_PORT_2_B: Mutex<String> = Mutex::new(command_output("amidi --list-devices | grep \"Launchkey MK2 25 MIDI 2\" \
-                    | sed -n '/^IO/s/.*\\(hw[^ ]*\\).*/\\1/p' | tr -d '\n'"));                        
+                    | sed -n '/^IO/s/.*\\(hw[^ ]*\\).*/\\1/p' | tr -d '\n'"));
     static ref FIRST_KEY: AtomicUsize = AtomicUsize::new(48);
     static ref FIRST_PAD: AtomicUsize = AtomicUsize::new(96);
     static ref SCROLL_DELAY: AtomicUsize = AtomicUsize::new(200);
@@ -135,146 +122,117 @@ lazy_static!
 
 // Getters and setters for globals
 
-pub fn g_get_pad(n: usize) -> &'static str
-{
+pub fn g_get_pad(n: usize) -> &'static str {
     PADS.get(&n).unwrap()
 }
 
-pub fn g_get_color(c: &str) -> &'static str
-{
+pub fn g_get_color(c: &str) -> &'static str {
     COLORS.get(c).unwrap()
 }
 
 #[allow(dead_code)]
-pub fn g_get_key_state(s: &str) -> bool
-{
+pub fn g_get_key_state(s: &str) -> bool {
     *KEY_STATE.lock().unwrap().get(s).unwrap()
 }
 
-pub fn g_set_key_state(s: &str, b: bool)
-{
+pub fn g_set_key_state(s: &str, b: bool) {
     KEY_STATE.lock().unwrap().insert(s!(s), b);
 }
 
-pub fn g_get_led_color(n: usize) -> String
-{
+pub fn g_get_led_color(n: usize) -> String {
     s!(LED_COLOR.lock().unwrap().get(&n).unwrap())
 }
 
-pub fn g_set_led_color(n: usize, s: &str)
-{
+pub fn g_set_led_color(n: usize, s: &str) {
     LED_COLOR.lock().unwrap().insert(n, s!(s));
 }
 
-pub fn g_get_cpu_level() -> usize
-{
+pub fn g_get_cpu_level() -> usize {
     CPU_LEVEL.load(Ordering::SeqCst)
 }
 
-pub fn g_set_cpu_level(n: usize)
-{
+pub fn g_set_cpu_level(n: usize) {
     CPU_LEVEL.store(n, Ordering::SeqCst)
 }
 
-pub fn g_get_ram_level() -> usize
-{
+pub fn g_get_ram_level() -> usize {
     RAM_LEVEL.load(Ordering::SeqCst)
 }
 
-pub fn g_set_ram_level(n: usize)
-{
+pub fn g_set_ram_level(n: usize) {
     RAM_LEVEL.store(n, Ordering::SeqCst)
 }
 
-pub fn g_get_scroll_direction() -> usize
-{
+pub fn g_get_scroll_direction() -> usize {
     SCROLL_DIRECTION.load(Ordering::SeqCst)
 }
 
-pub fn g_set_scroll_direction(n: usize)
-{
+pub fn g_set_scroll_direction(n: usize) {
     SCROLL_DIRECTION.store(n, Ordering::SeqCst)
 }
 
-pub fn g_get_ready() -> bool
-{
+pub fn g_get_ready() -> bool {
     READY.load(Ordering::SeqCst)
 }
 
-pub fn g_set_ready(b: bool)
-{
+pub fn g_set_ready(b: bool) {
     READY.store(b, Ordering::SeqCst)
 }
 
-pub fn g_get_leds_ready() -> bool
-{
+pub fn g_get_leds_ready() -> bool {
     LEDS_READY.load(Ordering::SeqCst)
 }
 
-pub fn g_set_leds_ready(b: bool)
-{
+pub fn g_set_leds_ready(b: bool) {
     LEDS_READY.store(b, Ordering::SeqCst)
 }
 
 // Config Getters
 
-pub fn g_get_midi_port_1() -> String
-{
+pub fn g_get_midi_port_1() -> String {
     s!(MIDI_PORT_1.lock().unwrap())
 }
 
 #[allow(dead_code)]
-pub fn g_get_midi_port_1_b() -> String
-{
+pub fn g_get_midi_port_1_b() -> String {
     s!(MIDI_PORT_1_B.lock().unwrap())
 }
 
-pub fn g_get_midi_port_2() -> String
-{
+pub fn g_get_midi_port_2() -> String {
     s!(MIDI_PORT_2.lock().unwrap())
 }
 
-
-pub fn g_get_midi_port_2_b() -> String
-{
+pub fn g_get_midi_port_2_b() -> String {
     s!(MIDI_PORT_2_B.lock().unwrap())
 }
 
-pub fn g_get_first_key() -> usize
-{
+pub fn g_get_first_key() -> usize {
     FIRST_KEY.load(Ordering::SeqCst)
 }
 
-pub fn g_get_first_pad() -> usize
-{
+pub fn g_get_first_pad() -> usize {
     FIRST_PAD.load(Ordering::SeqCst)
 }
 
-pub fn g_get_scroll_delay() -> usize
-{
+pub fn g_get_scroll_delay() -> usize {
     SCROLL_DELAY.load(Ordering::SeqCst)
 }
 
-pub fn g_get_led_delay() -> usize
-{
+pub fn g_get_led_delay() -> usize {
     LED_DELAY.load(Ordering::SeqCst)
 }
 
-pub fn g_get_ready_delay() -> usize
-{
+pub fn g_get_ready_delay() -> usize {
     READY_DELAY.load(Ordering::SeqCst)
 }
 
-pub fn g_get_debug() -> bool
-{
+pub fn g_get_debug() -> bool {
     DEBUG.load(Ordering::SeqCst)
 }
 
 // Helpsers
 
 #[allow(dead_code)]
-pub fn g_get_key_press_count() -> usize
-{
-    KEY_STATE.lock().unwrap()
-        .iter().filter(|&p| *p.1).count()
+pub fn g_get_key_press_count() -> usize {
+    KEY_STATE.lock().unwrap().iter().filter(|&p| *p.1).count()
 }

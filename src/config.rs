@@ -1,12 +1,8 @@
-use crate::
-{
-    command_output,
-};
+use crate::command_output;
 
 #[allow(dead_code)]
 #[derive(Debug)]
-pub struct Config
-{
+pub struct Config {
     // Regular port to use with aseqdump
     // Usually the first one
     // Find out the correct port with
@@ -38,7 +34,7 @@ pub struct Config
     // This is the number of the first drum pad
     pub first_pad: usize,
 
-    // How often an iteration in the 
+    // How often an iteration in the
     // scroll check thread happens
     // This also controls the scroll speed
     // Lower number = More checks
@@ -58,21 +54,27 @@ pub struct Config
     pub debug: bool,
 
     // Delay before the program begins to be operational
-    pub ready_delay: u64
+    pub ready_delay: u64,
 }
 
-pub fn make_config() -> Config
-{
-    Config
-    {
-        midi_port_1: command_output("aseqdump -l | grep \"Launchkey MK2 25 MIDI 1\" | awk '{$1=$1};1' \
-                        | sed 's/ .*//' | tr -d '\n'"),
-        midi_port_2: command_output("aseqdump -l | grep \"Launchkey MK2 25 MIDI 2\" | awk '{$1=$1};1' \
-                        | sed 's/ .*//' | tr -d '\n'"),
-        midi_port_1_b: command_output("amidi --list-devices | grep \"Launchkey MK2 25 MIDI 1\" \
-                        | sed -n '/^IO/s/.*\\(hw[^ ]*\\).*/\\1/p' | tr -d '\n'"),
-        midi_port_2_b: command_output("amidi --list-devices | grep \"Launchkey MK2 25 MIDI 2\" \
-                        | sed -n '/^IO/s/.*\\(hw[^ ]*\\).*/\\1/p' | tr -d '\n'"),                        
+pub fn make_config() -> Config {
+    Config {
+        midi_port_1: command_output(
+            "aseqdump -l | grep \"Launchkey MK2 25 MIDI 1\" | awk '{$1=$1};1' \
+                        | sed 's/ .*//' | tr -d '\n'",
+        ),
+        midi_port_2: command_output(
+            "aseqdump -l | grep \"Launchkey MK2 25 MIDI 2\" | awk '{$1=$1};1' \
+                        | sed 's/ .*//' | tr -d '\n'",
+        ),
+        midi_port_1_b: command_output(
+            "amidi --list-devices | grep \"Launchkey MK2 25 MIDI 1\" \
+                        | sed -n '/^IO/s/.*\\(hw[^ ]*\\).*/\\1/p' | tr -d '\n'",
+        ),
+        midi_port_2_b: command_output(
+            "amidi --list-devices | grep \"Launchkey MK2 25 MIDI 2\" \
+                        | sed -n '/^IO/s/.*\\(hw[^ ]*\\).*/\\1/p' | tr -d '\n'",
+        ),
         first_key: 48,
         first_pad: 96,
         scroll_delay: 200,
