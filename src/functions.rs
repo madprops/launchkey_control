@@ -119,6 +119,7 @@ pub fn pad_bottom_arrow_function() {
 }
 
 // Pitch bend
+#[allow(dead_code)]
 pub fn pitch_function(data: &str) {
     let n = data.parse::<isize>().unwrap();
     let direction = if n > 0 {
@@ -136,7 +137,6 @@ pub fn first_knob_function(data: &str) {
     // Change volume
     let v: isize = ((data.parse::<f64>().unwrap() / 127.0) * 100.0) as isize;
     let cmd = format!("amixer -q -D pulse set Master {}%", v);
-    println!("{}", cmd);
     spawn_command(&cmd);
 }
 

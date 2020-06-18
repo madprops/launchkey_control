@@ -173,6 +173,7 @@ pub fn get_key_position(note: &str) -> String {
 
 // Thread that starts a check
 // to see if the system should scroll
+#[allow(dead_code)]
 pub fn start_scroll_check() {
     thread::spawn(move || loop {
         let direction = g_get_scroll_direction();

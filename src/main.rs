@@ -8,7 +8,7 @@ mod leds;
 mod listeners;
 mod macros;
 
-use crate::{events::*, globals::*, leds::*, listeners::*};
+use crate::{globals::*, leds::*, listeners::*};
 
 use std::{
     process::Command,

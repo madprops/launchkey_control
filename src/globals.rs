@@ -117,7 +117,7 @@ lazy_static! {
     static ref SCROLL_DELAY: AtomicUsize = AtomicUsize::new(200);
     static ref LED_DELAY: AtomicUsize = AtomicUsize::new(5000);
     static ref READY_DELAY: AtomicUsize = AtomicUsize::new(2000);
-    static ref DEBUG: AtomicBool = AtomicBool::new(true);
+    static ref DEBUG: AtomicBool = AtomicBool::new(false);
 }
 
 // Getters and setters for globals
