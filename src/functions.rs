@@ -12,10 +12,10 @@ pub fn key_function(s: &str, mode: &str) {
         "on" => {
             match s {
                 // White keys
-                "w1" => spawn_command("wmctrl -s 0"),
-                "w2" => spawn_command("wmctrl -s 1"),
-                "w3" => spawn_command("wmctrl -s 2"),
-                "w4" => spawn_command("wmctrl -s 3"),
+                "w1" => {}
+                "w2" => {}
+                "w3" => {}
+                "w4" => {}
                 "w5" => {}
                 "w6" => {}
                 "w7" => {}
@@ -96,7 +96,7 @@ pub fn pad_function(n: usize) {
         8 => {}
 
         // Second row
-        9 => spawn_command("xdotool key XF86AudioPlay"),
+        9 => spawn_command("playerctl play-pause"),
         10 => {}
         11 => {}
         12 => {}
@@ -154,12 +154,12 @@ pub fn play_button_function() {
 
 // Track left button
 pub fn track_left_button_function() {
-    spawn_command("xdotool key XF86AudioLowerVolume");
+    spawn_command("awesome-client 'decrease_volume()'");
 }
 
 // Track right button
 pub fn track_right_button_function() {
-    spawn_command("xdotool key XF86AudioRaiseVolume");
+    spawn_command("awesome-client 'increase_volume()'");
 }
 
 // Right curved slider

@@ -18,9 +18,5 @@ In the image below you can see the Launchkey with the indicator leds. The top ro
 
 Having `aseqdump` and `amidi` installed is required.
 
-Some mapped operations depend on `wmctrl` and `xdotool`.
-
-`sudo apt install alsa-utils wmctrl xdotool`
-
 Tip: Cover the octave buttons. Put something on top to avoid accidental note offsets.
 Tip: Don't change the track offset. This happens when you press both of them at the same time.
