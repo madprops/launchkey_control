@@ -1,4 +1,4 @@
-use crate::{globals::*, spawn_command};
+use crate::{globals::*, utils::*, spawn_command};
 
 // Execute a function associated with a key
 // Either when a key is pressed or released
@@ -96,7 +96,7 @@ pub fn pad_function(n: usize) {
         8 => {}
 
         // Second row
-        9 => spawn_command("playerctl play-pause"),
+        9 => {}
         10 => {}
         11 => {}
         12 => {}
@@ -162,12 +162,13 @@ pub fn track_right_button_function() {
     spawn_command("awesome-client 'increase_volume()'");
 }
 
-// Right curved slider
-pub fn mod_slider_function(_data: &str) {
-    // let v: isize = ((data.parse::<f64>().unwrap() / 127.0) * 100.0) as isize;
+// Linear slider
+pub fn linear_slider_function(data: &str) {
+    let p = get_percentage(data);
+    spawn_command(&format!("pamixer --set-volume {}", p));
 }
 
-// Linear slider
-pub fn linear_slider_function(_data: &str) {
-    // let v: isize = ((data.parse::<f64>().unwrap() / 127.0) * 100.0) as isize;
+// Right curved slider
+pub fn mod_slider_function(_data: &str) {
+    // 
 }

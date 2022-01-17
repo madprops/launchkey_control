@@ -7,6 +7,7 @@ mod globals;
 mod leds;
 mod listeners;
 mod macros;
+mod utils;
 
 use crate::{globals::*, leds::*, listeners::*};
 
