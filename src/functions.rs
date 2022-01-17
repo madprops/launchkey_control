@@ -165,7 +165,7 @@ pub fn track_right_button_function() {
 // Linear slider
 pub fn linear_slider_function(data: &str) {
     let p = get_percentage(data);
-    spawn_command(&format!("pamixer --set-volume {}", p));
+    spawn_command(&format!("awesome-client 'set_volume({})'", p));
 }
 
 // Right curved slider
