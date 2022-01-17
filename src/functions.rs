@@ -110,12 +110,12 @@ pub fn pad_function(n: usize) {
 
 // Arrow button to the right of the apds
 pub fn pad_top_arrow_function() {
-    // spawn_command("~/scripts/audioswitch speakers");
+    spawn_command("awesome-client 'unlockscreen()'");
 }
 
 // Arrow button to the right of the apds
 pub fn pad_bottom_arrow_function() {
-    // spawn_command("~/scripts/audioswitch headphones");
+    spawn_command("awesome-client 'lockscreen()'");
 }
 
 // Pitch bend
