@@ -104,13 +104,13 @@ lazy_static! {
 
     // CONFIG
 
-    static ref MIDI_PORT_1: Mutex<String> = Mutex::new(command_output("aseqdump -l | grep \"Launchkey MK2 25 MIDI 1\" | awk '{$1=$1};1' \
+    static ref MIDI_PORT_1: Mutex<String> = Mutex::new(command_output("aseqdump -l | grep \"Launchkey MK2 25 Launchkey MIDI\" | awk '{$1=$1};1' \
                     | sed 's/ .*//' | tr -d '\n'"));
-    static ref MIDI_PORT_2: Mutex<String> = Mutex::new(command_output("aseqdump -l | grep \"Launchkey MK2 25 MIDI 2\" | awk '{$1=$1};1' \
+    static ref MIDI_PORT_2: Mutex<String> = Mutex::new(command_output("aseqdump -l | grep \"Launchkey MK2 25 Launchkey InCo\" | awk '{$1=$1};1' \
                     | sed 's/ .*//' | tr -d '\n'"));
-    static ref MIDI_PORT_1_B: Mutex<String> = Mutex::new(command_output("amidi --list-devices | grep \"Launchkey MK2 25 MIDI 1\" \
+    static ref MIDI_PORT_1_B: Mutex<String> = Mutex::new(command_output("amidi --list-devices | grep \"Launchkey MK2 25 Launchkey MIDI\" \
                     | sed -n '/^IO/s/.*\\(hw[^ ]*\\).*/\\1/p' | tr -d '\n'"));
-    static ref MIDI_PORT_2_B: Mutex<String> = Mutex::new(command_output("amidi --list-devices | grep \"Launchkey MK2 25 MIDI 2\" \
+    static ref MIDI_PORT_2_B: Mutex<String> = Mutex::new(command_output("amidi --list-devices | grep \"Launchkey MK2 25 Launchkey InCo\" \
                     | sed -n '/^IO/s/.*\\(hw[^ ]*\\).*/\\1/p' | tr -d '\n'"));
     static ref FIRST_KEY: AtomicUsize = AtomicUsize::new(48);
     static ref FIRST_PAD: AtomicUsize = AtomicUsize::new(96);

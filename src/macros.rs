@@ -1,11 +1,11 @@
 #[macro_export]
 macro_rules! p {
     ($left:expr, $right:expr) => {
-        println!($left, $right);
+        println!($left, $right)
     };
 
     ($left:expr) => {
-        println!("{}", $left);
+        println!("{}", $left)
     };
 }
 

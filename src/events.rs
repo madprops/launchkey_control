@@ -74,18 +74,39 @@ pub fn process_midi_event(e: MidiEvent) {
 
             match &e.data_1[..] {
                 // Curved right slider
-                "1" => {} //mod_slider_function(&e.data_2),
+                "1" => mod_slider_function(&e.data_2),
                 // Linear slider
-                "7" => {}
+                "7" => linear_slider_function(&e.data_2),
                 // First knob
-                "21" => first_knob_function(&e.data_2),
+                "21" => {},
+                // Prev button
+                "112" => {
+                    // Press
+                    if e.data_2 == "127" {
+                        prev_button_function();
+                    }
+                },
+                // Next button
+                "113" => {
+                    // Press
+                    if e.data_2 == "127" {
+                        next_button_function();
+                    }
+                },                                
                 // Stop button
                 "114" => {
                     // Press
                     if e.data_2 == "127" {
                         stop_button_function();
                     }
-                }
+                },
+                // Play button
+                "115" => {
+                    // Press
+                    if e.data_2 == "127" {
+                        play_button_function();
+                    }
+                }             
                 // Track left
                 "102" => {
                     // Press
