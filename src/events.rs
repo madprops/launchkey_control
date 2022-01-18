@@ -45,6 +45,10 @@ pub fn process_midi_event(e: MidiEvent) {
                             debug(&format!("Pad {} on", &e.data_1));
 
                             match &e.data_1[..] {
+                                // Left Control Top
+                                "16" => left_control_top_function(),
+                                // Left Control Bottom
+                                "15" => left_control_bottom_function(),                             
                                 // Top arrow button
                                 "104" => pad_top_arrow_function(),
                                 // Bottom arrow button

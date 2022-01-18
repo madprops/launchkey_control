@@ -158,7 +158,7 @@ lazy_static! {
 
     // If this is enabled the program will output
     // some useful information for debugging    
-    static ref DEBUG: AtomicBool = AtomicBool::new(true);
+    static ref DEBUG: AtomicBool = AtomicBool::new(false);
 }
 
 // Getters and setters for globals

@@ -1,4 +1,4 @@
-use crate::{globals::*, utils::*, spawn_command};
+use crate::{globals::*, utils::*, leds::*, spawn_command};
 
 // Execute a function associated with a key
 // Either when a key is pressed or released
@@ -106,6 +106,16 @@ pub fn pad_function(n: usize) {
         16 => {}
         _ => {}
     }
+}
+
+// Left Control Top
+pub fn left_control_top_function() {
+
+}
+
+// Left Control Bottom
+pub fn left_control_bottom_function() {
+    init_leds();
 }
 
 // Arrow button to the right of the apds

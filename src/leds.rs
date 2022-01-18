@@ -1,4 +1,4 @@
-use crate::{debug, globals::*, midi_signal, sleep};
+use crate::{debug, globals::*, utils::*, midi_signal, sleep};
 
 use std::thread;
 
@@ -104,4 +104,13 @@ pub fn start_led_check() {
         update_leds();
         sleep(g_get_led_delay());
     });
+}
+
+// Initiate leds at start and when restarting InControl
+pub fn init_leds() {
+    switch_mode("extended");
+    turn_leds_off("both");
+    g_set_cpu_level(0);
+    g_set_ram_level(0);
+    g_set_leds_ready(true);    
 }
