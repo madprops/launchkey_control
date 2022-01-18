@@ -1,6 +1,5 @@
 #![allow(clippy::cognitive_complexity)]
 
-mod config;
 mod events;
 mod functions;
 mod globals;
@@ -78,6 +77,7 @@ pub fn command_output(cmd: &str) -> String {
 
 // Sends a midi signal
 pub fn midi_signal(hex: &str) {
+    debug(&format!("Signal: {}", hex));
     run_command(&format!("amidi -p {} -S {}", g_get_midi_port_2_b(), hex));
 }
 

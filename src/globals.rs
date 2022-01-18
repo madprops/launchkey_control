@@ -1,4 +1,4 @@
-use crate::{command_output, config::*, hashmap, s};
+use crate::{command_output, hashmap, s};
 
 use std::{
     collections::HashMap,
@@ -95,7 +95,6 @@ lazy_static! {
         16 => s!("off")
     });
 
-    static ref CONFIG: Config = make_config();
     static ref CPU_LEVEL: AtomicUsize = AtomicUsize::new(0);
     static ref RAM_LEVEL: AtomicUsize = AtomicUsize::new(0);
     static ref SCROLL_DIRECTION: AtomicUsize = AtomicUsize::new(0);
@@ -104,20 +103,62 @@ lazy_static! {
 
     // CONFIG
 
+    // Regular port to use with aseqdump
+    // Usually the first one
+    // Find out the correct port with
+    //          aseqdump -l
     static ref MIDI_PORT_1: Mutex<String> = Mutex::new(command_output("aseqdump -l | grep \"Launchkey MK2 25 Launchkey MIDI\" | awk '{$1=$1};1' \
                     | sed 's/ .*//' | tr -d '\n'"));
+
+    // InControl port to use with aseqdump
+    // Usually the second/alternative one
+    // Find out the correct port with
+    //          aseqdump -l
     static ref MIDI_PORT_2: Mutex<String> = Mutex::new(command_output("aseqdump -l | grep \"Launchkey MK2 25 Launchkey InCo\" | awk '{$1=$1};1' \
                     | sed 's/ .*//' | tr -d '\n'"));
+
+    // Regular port to use with amidi
+    // Usually the first one
+    // Find out the correct port with:
+    //          amidi --list-devices
     static ref MIDI_PORT_1_B: Mutex<String> = Mutex::new(command_output("amidi --list-devices | grep \"Launchkey MK2 25 Launchkey MIDI\" \
                     | sed -n '/^IO/s/.*\\(hw[^ ]*\\).*/\\1/p' | tr -d '\n'"));
+
+    // InControl port to use with amidi
+    // Usually the second/alternative one
+    // Find out the correct port with:
+    //          amidi --list-devices                    
     static ref MIDI_PORT_2_B: Mutex<String> = Mutex::new(command_output("amidi --list-devices | grep \"Launchkey MK2 25 Launchkey InCo\" \
                     | sed -n '/^IO/s/.*\\(hw[^ ]*\\).*/\\1/p' | tr -d '\n'"));
+
+    // This is the note of the first key
+    // This can be changed through Octave                    
     static ref FIRST_KEY: AtomicUsize = AtomicUsize::new(48);
+
+    // This is the number of the first drum pad    
     static ref FIRST_PAD: AtomicUsize = AtomicUsize::new(96);
+
+    // How often an iteration in the
+    // scroll check thread happens
+    // This also controls the scroll speed
+    // Lower number = More checks
+    // Lower number = Faster scroll
+    // This value represents milliseconds    
     static ref SCROLL_DELAY: AtomicUsize = AtomicUsize::new(200);
+
+    // How often the resources must be checked
+    // and how often to update the leds if changed
+    // Lower number = More checks
+    // Lower number = More led color updates
+    // This value represents milliseconds    
     static ref LED_DELAY: AtomicUsize = AtomicUsize::new(5000);
+
+    // Delay before the program begins to be operational    
     static ref READY_DELAY: AtomicUsize = AtomicUsize::new(2000);
-    static ref DEBUG: AtomicBool = AtomicBool::new(false);
+
+    // If this is enabled the program will output
+    // some useful information for debugging    
+    static ref DEBUG: AtomicBool = AtomicBool::new(true);
 }
 
 // Getters and setters for globals
@@ -230,7 +271,7 @@ pub fn g_get_debug() -> bool {
     DEBUG.load(Ordering::SeqCst)
 }
 
-// Helpsers
+// Helpers
 
 #[allow(dead_code)]
 pub fn g_get_key_press_count() -> usize {
