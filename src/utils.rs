@@ -40,6 +40,7 @@ pub fn run_command(cmd: &str) {
       .expect("Can't run command.");
 }
 
+// Spawn command
 pub fn spawn_command(cmd: &str) {
   Command::new("bash")
       .arg("-c")
@@ -48,6 +49,7 @@ pub fn spawn_command(cmd: &str) {
       .expect("Can't spawn command.");
 }
 
+// Spawn command and get output
 pub fn command_output(cmd: &str) -> String {
   let o = Command::new("bash")
       .arg("-c")
