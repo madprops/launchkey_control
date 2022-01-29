@@ -125,7 +125,7 @@ pub fn pad_top_arrow_function() {
 
 // Arrow button to the right of the apds
 pub fn pad_bottom_arrow_function() {
-    spawn_command("awesome-client 'lockscreen()'");
+    spawn_command("awesome-client 'alt_lockscreen()'");
 }
 
 // Pitch bend
