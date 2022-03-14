@@ -68,7 +68,6 @@ pub fn update_leds() {
     // Calculate and reflect CPU usage
     let cpu = command_output("mpstat 1 2 | awk 'END{print 100-$NF}'").trim().parse::<f32>().unwrap();
     let level = led_level(cpu);
-    println!("{}", level);
 
     if g_get_cpu_level() != level {
         change_led_range(1, level, led_color(level));
