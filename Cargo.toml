@@ -8,5 +8,4 @@ edition = "2018"
 
 [dependencies]
 lazy_static = "1.4.0"
-psutil = "1.7.0"
 signal-hook = "0.1.11"

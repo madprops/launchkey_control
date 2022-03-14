@@ -66,9 +66,9 @@ pub fn led_color<'a>(n: usize) -> &'a str {
 // and reflect it with the leds
 pub fn update_leds() {
     // Calculate and reflect CPU usage
-
-    let cpu = psutil::cpu::cpu_percent(1.0).expect("Can't measure cpu usage.") as f32;
+    let cpu = command_output("mpstat 1 2 | awk 'END{print 100-$NF}'").trim().parse::<f32>().unwrap();
     let level = led_level(cpu);
+    println!("{}", level);
 
     if g_get_cpu_level() != level {
         change_led_range(1, level, led_color(level));
@@ -81,10 +81,7 @@ pub fn update_leds() {
     }
 
     // Calculate and reflect RAM usage
-
-    let ram = psutil::memory::virtual_memory()
-        .expect("Can't measure ram usage.")
-        .percent;
+    let ram = command_output("free | grep Mem | awk '{print $3/$2 * 100.0}'").trim().parse::<f32>().unwrap();
     let level = led_level(ram);
 
     if g_get_ram_level() != level {

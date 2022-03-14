@@ -151,7 +151,7 @@ lazy_static! {
     // Lower number = More checks
     // Lower number = More led color updates
     // This value represents milliseconds    
-    static ref LED_DELAY: AtomicUsize = AtomicUsize::new(5000);
+    static ref LED_DELAY: AtomicUsize = AtomicUsize::new(3000);
 
     // Delay before the program begins to be operational    
     static ref READY_DELAY: AtomicUsize = AtomicUsize::new(2000);
