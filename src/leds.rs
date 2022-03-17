@@ -66,31 +66,43 @@ pub fn led_color<'a>(n: usize) -> &'a str {
 // and reflect it with the leds
 pub fn update_leds() {
     // Calculate and reflect CPU usage
-    let cpu = command_output("mpstat 1 2 | awk 'END{print 100-$NF}'").trim().parse::<f32>().unwrap();
-    let level = led_level(cpu);
+    let cpu_ans = command_output("mpstat 1 2 | awk 'END{print 100-$NF}'").trim().parse::<f32>();
 
-    if g_get_cpu_level() != level {
-        change_led_range(1, level, led_color(level));
+    match cpu_ans {
+        Ok(cpu) => {
+            let level = led_level(cpu);
 
-        if level < 8 {
-            change_led_range(1 + level, 8, "off");
+            if g_get_cpu_level() != level {
+                change_led_range(1, level, led_color(level));
+        
+                if level < 8 {
+                    change_led_range(1 + level, 8, "off");
+                }
+        
+                g_set_cpu_level(level);
+            }
         }
-
-        g_set_cpu_level(level);
+        Err(_) => {}
     }
 
     // Calculate and reflect RAM usage
-    let ram = command_output("free | grep Mem | awk '{print $3/$2 * 100.0}'").trim().parse::<f32>().unwrap();
-    let level = led_level(ram);
+    let ram_ans = command_output("free | grep Mem | awk '{print $3/$2 * 100.0}'").trim().parse::<f32>();
+    
+    match ram_ans {
+        Ok(ram) => {
+            let level = led_level(ram);
 
-    if g_get_ram_level() != level {
-        change_led_range(9, 8 + level, led_color(level));
-
-        if level < 8 {
-            change_led_range(9 + level, 16, "off");
+            if g_get_ram_level() != level {
+                change_led_range(9, 8 + level, led_color(level));
+        
+                if level < 8 {
+                    change_led_range(9 + level, 16, "off");
+                }
+        
+                g_set_ram_level(level);
+            }
         }
-
-        g_set_ram_level(level);
+        Err(_) => {}
     }
 }
 

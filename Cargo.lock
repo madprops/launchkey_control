@@ -10,7 +10,7 @@ checksum = "f1a1eca3195b729bbd64e292ef2f5fff6b1c28504fed762ce2b1013dde4d8e92"
 
 [[package]]
 name = "launchkey_control"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "lazy_static",
  "signal-hook",
