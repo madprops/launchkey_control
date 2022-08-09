@@ -120,12 +120,12 @@ pub fn left_control_bottom_function() {
 
 // Arrow button to the right of the apds
 pub fn pad_top_arrow_function() {
-    spawn_command("awesome-client 'unlockscreen()'");
+    spawn_command("awesome-client 'Utils.unlockscreen()'");
 }
 
 // Arrow button to the right of the apds
 pub fn pad_bottom_arrow_function() {
-    spawn_command("awesome-client 'alt_lockscreen()'");
+    spawn_command("awesome-client 'Utils.alt_lockscreen()'");
 }
 
 // Pitch bend
@@ -164,18 +164,18 @@ pub fn play_button_function() {
 
 // Track left button
 pub fn track_left_button_function() {
-    spawn_command("awesome-client 'decrease_volume()'");
+    spawn_command("awesome-client 'Utils.decrease_volume()'");
 }
 
 // Track right button
 pub fn track_right_button_function() {
-    spawn_command("awesome-client 'increase_volume()'");
+    spawn_command("awesome-client 'Utils.increase_volume()'");
 }
 
 // Linear slider
 pub fn linear_slider_function(data: &str) {
     let p = get_percentage(data);
-    spawn_command(&format!("awesome-client 'set_volume({})'", p));
+    spawn_command(&format!("awesome-client 'Utils.set_volume({})'", p));
 }
 
 // Right curved slider
