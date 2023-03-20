@@ -34,8 +34,12 @@ pub fn key_function(s: &str, mode: &str) {
                 "w15" => {}
 
                 // Black keys
-                "b1" => {}
-                "b2" => {}
+                "b1" => {
+                    spawn_command("awesome-client 'Utils.decrease_volume(true)'");
+                }
+                "b2" => {
+                    spawn_command("awesome-client 'Utils.increase_volume(true)'");
+                }
                 "b3" => {}
                 "b4" => {}
                 "b5" => {}
@@ -169,12 +173,12 @@ pub fn play_button_function() {
 
 // Track left button
 pub fn track_left_button_function() {
-    spawn_command("awesome-client 'Utils.decrease_volume()'");
+    spawn_command("awesome-client 'Utils.decrease_volume(true)'");
 }
 
 // Track right button
 pub fn track_right_button_function() {
-    spawn_command("awesome-client 'Utils.increase_volume()'");
+    spawn_command("awesome-client 'Utils.increase_volume(true)'");
 }
 
 // Linear slider
