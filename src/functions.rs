@@ -12,8 +12,13 @@ pub fn key_function(s: &str, mode: &str) {
         "on" => {
             match s {
                 // White keys
-                "w1" => {}
-                "w2" => {}
+                "w1" => {
+                    spawn_command("playerctl play-pause");
+                }
+                "w2" => {
+                    spawn_command("playerctl play");
+                    spawn_command("playerctl next");
+                }
                 "w3" => {}
                 "w4" => {}
                 "w5" => {}
