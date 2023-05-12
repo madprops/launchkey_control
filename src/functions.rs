@@ -13,11 +13,11 @@ pub fn key_function(s: &str, mode: &str) {
             match s {
                 // White keys
                 "w1" => {
-                    spawn_command("playerctl play-pause");
+                    // spawn_command("playerctl play-pause");
                 }
                 "w2" => {
-                    spawn_command("playerctl play");
-                    spawn_command("playerctl next");
+                    // spawn_command("playerctl play");
+                    // spawn_command("playerctl next");
                 }
                 "w3" => {}
                 "w4" => {}
@@ -189,5 +189,5 @@ pub fn linear_slider_function(data: &str) {
 
 // Right curved slider
 pub fn mod_slider_function(_data: &str) {
-    // 
+    //
 }
