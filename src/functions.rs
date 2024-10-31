@@ -13,11 +13,10 @@ pub fn key_function(s: &str, mode: &str) {
             match s {
                 // White keys
                 "w1" => {
-                    // spawn_command("playerctl play-pause");
+                    spawn_command("awesome-client 'Utils.prev_tag()'");
                 }
                 "w2" => {
-                    // spawn_command("playerctl play");
-                    // spawn_command("playerctl next");
+                    spawn_command("awesome-client 'Utils.next_tag()'");
                 }
                 "w3" => {}
                 "w4" => {}
